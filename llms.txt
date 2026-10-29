@@ -1,0 +1,30 @@
+# W144
+
+> W144: a house of two agencies and three instruments. We study why one business holds and another breaks, and build the instruments that help yours hold.
+
+W144 Company, a holding. A family house, not a startup. One team across five projects, since 2022. Alexander Zolotarynets, Founder; Serhii Zolotarynets, CEO; Mikhail Zolotarynets, Head of Engineering. 30+ people across all products.
+
+The Academy of market power works like a laboratory: we study each niche, the cases that are not obvious and the people who buy, and only then put out a product we can stand behind.
+
+## Software
+
+- [w144.com](https://w144.com): Software for the decisions inside a business.
+- Platform: Private commercial accounting. In development.
+- The third instrument: A business online in five minutes. In development.
+
+## Agencies
+
+- [w144.eu](https://w144.eu): A company's position in the market, read on the market power map.
+- [w144.dev](https://w144.dev): Intervening in a product's economics to raise what it earns.
+
+## Pages
+
+- [Our way](https://w144.company/our-way.html): Who we are and how we work: a house built by one family, a boutique, authored products, one measure for everything.
+- [Community](https://w144.company/community.html): A window into the W144 community: our channels, the school on Skool, articles and the tools we give away.
+- [Contact](https://w144.company/contact.html): Contact W144: partnership, careers and everything else.
+
+## Contact
+
+- Partnership: partners@w144.company
+- Careers: careers@w144.company
+- Everything else: info@w144.company

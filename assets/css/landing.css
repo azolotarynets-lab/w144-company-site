@@ -1,0 +1,356 @@
+/* w144.company landing: the components laid out as one folder of sheets. Eight columns, generous air,
+   projects near a full screen each (the Longbow rhythm), everything else from components.css. */
+:root { --gutter: clamp(20px, 6vw, 120px); --sec: clamp(120px, 17vh, 240px); }
+/* the header stays at the top (scroll.js holds it in the same frame that moves the page). Once the page moves it gets
+   a strip of paper behind it: the paper's own colours at the top of the screen (lighter under the lamp in the middle,
+   a little darker at the edges, measured 2026-10-24), its grain, and a faint shadow under the hairline. */
+.l-top { position: relative; z-index: 40; padding-top: 6px; will-change: transform; }
+.l-top::before { content: ''; position: absolute; z-index: -1; top: 0; bottom: 0; left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter));
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .03 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(90deg, #e6e1da 0%, #e9e4dd 12%, #ece8e1 25%, #f0ece4 38%, #f4f0e8 50%, #f4efe7 62%, #f0ebe4 75%, #ece7e0 88%, #e8e3dc 100%);
+  box-shadow: 0 16px 26px -22px rgba(60, 55, 50, 0.32);
+  opacity: 0; transition: opacity 0.45s ease; }
+.l-top.is-stuck::before { opacity: 1; }
+.l-sec { padding: var(--sec) 0 0; }
+.l-sec:last-of-type { padding-bottom: clamp(60px, 8vh, 100px); }
+.l-head { margin-bottom: clamp(70px, 10vh, 140px); }
+.l-full { margin: 0; }
+.l-full img { width: 100%; height: auto; display: block; }
+.l-full figcaption { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 26px; }
+.l-full figcaption .lbl { color: var(--c-soft); }
+/* the three architectures, side by side on the columns */
+.c-trio { display: grid; grid-template-columns: repeat(8, 1fr); column-gap: 0; margin-top: clamp(70px, 10vh, 130px); }
+.c-trio .it { grid-column: span 2; padding-right: 2vw; }
+.c-trio .it:nth-child(1) { grid-column: 2 / 4; } .c-trio .it:nth-child(2) { grid-column: 4 / 6; } .c-trio .it:nth-child(3) { grid-column: 6 / 8; }
+.c-trio .n { font-weight: 300; font-size: 12px; letter-spacing: 0.12em; color: var(--c-faint); margin: 0 0 18px; font-variant-numeric: tabular-nums; }
+.c-trio h3 { font-weight: 200; font-size: clamp(22px, 1.6vw, 30px); line-height: 1.15; letter-spacing: -0.01em; color: var(--c-ink); margin: 0 0 14px; }
+.c-trio p { font-weight: 300; font-size: var(--t-body); line-height: 1.6; color: var(--c-soft); margin: 0; max-width: 24em; }
+/* projects: near a full screen each */
+.l-proj { min-height: 88vh; display: grid; align-content: center; }
+.l-proj + .l-proj { margin-top: clamp(60px, 10vh, 140px); }
+.l-show + .l-show { margin-top: clamp(110px, 16vh, 220px); }
+/* a project: the product's hero in the bezel plate, beside it the text and the drawing, like the sketches beside the watch */
+.c-pp { display: grid; grid-template-columns: repeat(8, 1fr); align-items: stretch; }
+.c-pp .plate { grid-column: 1 / 6; grid-row: 1; align-self: center; }
+.c-pp .side { grid-column: 6 / 9; grid-row: 1; padding-left: 3.2vw; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
+.c-pp--rev .plate { grid-column: 4 / 9; }
+.c-pp--rev .side { grid-column: 1 / 4; padding-left: 0; padding-right: 3.2vw; }
+.c-pp .dom { font-weight: 400; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); margin: 0; }
+.c-pp .claim { font-weight: 200; font-size: clamp(30px, 2.6vw, 48px); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 12px 0 0; }
+.c-pp .list { font-weight: 300; font-size: 14px; letter-spacing: 0.04em; line-height: 1.95; color: var(--c-soft); margin: 26px 0 0; padding: 0; list-style: none; }
+.c-pp .act { margin-top: 36px; }
+.c-pp .draw img { width: 100%; max-width: 440px; height: auto; display: block; }
+.c-pp--rev .draw img { margin-left: auto; }
+.c-pp .figline { grid-column: 1 / 9; grid-row: 2; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 34px; }
+.c-pp .figline .lbl { color: var(--c-soft); }
+.c-prod .float-plate { grid-column: 1 / 6; }
+/* the workshop sheet under the schedule */
+.l-work { display: grid; grid-template-columns: repeat(8, 1fr); margin-top: clamp(70px, 10vh, 130px); align-items: end; }
+.l-work .c-fig { grid-column: 1 / 6; }
+.l-work .note { grid-column: 6 / 9; font-weight: 300; font-size: var(--t-body); line-height: 1.6; color: var(--c-soft); margin: 0 0 40px; }
+/* the house: the clock on the left, the story on the right, the two people under it */
+.c-family { display: grid; grid-template-columns: repeat(8, 1fr); align-items: start; }
+.c-family .c-fig { grid-column: 1 / 5; }
+.c-family .story { grid-column: 6 / 9; padding-top: 2vh; }
+.c-family .story h3 { font-weight: 200; font-size: var(--t-title); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 0 0 22px; }
+.c-family .story > p { font-weight: 300; font-size: var(--t-lead); line-height: 1.55; color: var(--c-soft); margin: 0; }
+.c-family .two-p { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 54px; padding-top: 30px; border-top: 1px solid var(--c-hair); }
+.c-family .two-p h4 { font-weight: 400; font-size: var(--t-lbl); letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); margin: 0 0 14px; }
+.c-family .two-p p { font-weight: 300; font-size: var(--t-body); line-height: 1.6; color: var(--c-soft); margin: 0; }
+
+/* the opening: the Institute and its name, nothing else (the name set large in the empty water, like Longbow's word) */
+.l-hero0 { padding-top: clamp(26px, 4vh, 56px); }
+.c-hero0 { position: relative; width: min(100%, calc((100vh - 140px) * 1.6)); margin: 0 auto; container-type: inline-size; }
+.c-hero0 .sheet { display: block; width: 100%; height: auto; aspect-ratio: 1.6; }
+/* W144 drawn, not set (tools/lettering.py): the light cut's outlines with a dash-dot axis through every stroke, between
+   a cap line and a base line, on the exact footprint the typeset word had (top = baseline 59.76cqw - 1100 units) */
+.c-hero0 .lt { position: absolute; left: 0; width: 100%; height: auto; top: 41.06cqw; overflow: visible; pointer-events: none; }
+.c-hero0 .lt path { fill: none; vector-effect: non-scaling-stroke; }
+.c-hero0 .lt .g { stroke: var(--c-soft); stroke-width: 1; opacity: 0.55; }
+.c-hero0 .lt .d { stroke: var(--c-soft); stroke-width: 1; }
+.c-hero0 .lt .x { stroke: var(--c-soft); stroke-width: 1; stroke-dasharray: 18 5 3 5; }
+.c-hero0 .lt .o { stroke: var(--c-ink); stroke-width: 1.3; stroke-linejoin: miter; }
+/* the projects come straight after, a little wider than the columns (into the gutters) */
+.l-projects { padding-top: clamp(70px, 10vh, 130px); }
+.l-show { margin: 0 calc(-1 * max(0px, var(--gutter) - 48px)); }
+.l-show + .l-show { margin-top: clamp(90px, 13vh, 180px); }
+/* drawings on the ground: printed light on the sheet behind everything, free to be covered */
+.l-bgs { position: relative; }
+.l-bg { position: absolute; z-index: 0; height: auto; pointer-events: none; --print-ink: #b4aea6; }
+.l-bgs > :not(.l-bg) { position: relative; z-index: 1; }
+
+/* the two quiet blocks after the products: a label set wide on the left, a thin title and one line on the columns */
+.l-say { padding-top: clamp(220px, 34vh, 440px); }
+.l-say + .l-say { padding-top: clamp(120px, 18vh, 240px); }
+.c-say { display: grid; grid-template-columns: repeat(8, 1fr); align-items: baseline; }
+.c-say .lbl { grid-column: 1 / 3; }
+.c-say .t { grid-column: 3 / 7; }
+.c-say h2 { font-weight: 200; font-size: var(--t-title); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 0; }
+.c-say p:not(.lbl) { font-weight: 300; font-size: var(--t-lead); line-height: 1.55; color: var(--c-soft); margin: 20px 0 0; max-width: 30em; }
+
+/* the two groups of products, each opened by a figure line */
+.l-group { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin: 0 0 clamp(36px, 5vh, 60px); }
+.l-group .lbl { color: var(--c-soft); }
+.l-projects--agencies { padding-top: clamp(150px, 22vh, 300px); }
+/* the pause between them: air, a drawing on the ground, the subject of the house and the house in numbers */
+.l-pause { padding-top: clamp(220px, 34vh, 440px); }
+.c-pause { display: grid; grid-template-columns: repeat(8, 1fr); row-gap: clamp(90px, 13vh, 170px); }
+.c-pause .t { grid-column: 1 / 5; }
+.c-pause h2 { font-weight: 200; font-size: var(--t-giant); line-height: 0.95; letter-spacing: -0.03em; color: var(--c-ink); margin: 0; }
+.c-pause .t p { font-weight: 300; font-size: var(--t-lead); line-height: 1.55; color: var(--c-soft); margin: 28px 0 0; max-width: 31em; }
+.c-pause .facts { grid-column: 1 / 9; display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border-top: 1px solid var(--c-hair); }
+.c-pause .facts > div { padding: 26px 2vw 0 0; }
+.c-pause .facts dt { font-weight: 400; font-size: var(--t-lbl); letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); }
+.c-pause .facts dd { margin: 18px 0 0; font-weight: 200; font-size: clamp(30px, 2.6vw, 50px); line-height: 1; letter-spacing: -0.02em; color: var(--c-ink); font-variant-numeric: lining-nums; }
+.c-say .act { margin-top: 34px; }
+
+/* the house: the title and the sheet of the king, queen and rook on the left; on the right the three of them together, drawn like the parts of one
+   assembly: a dimension over the group, the centre line running through the plates, a number and a caption under each */
+.l-team { padding-top: clamp(220px, 34vh, 440px); }
+.c-house { display: grid; grid-template-columns: repeat(8, 1fr); row-gap: clamp(40px, 5.5vh, 72px); align-items: start; }   /* the left column about as tall as the team beside it */
+.c-house .side { grid-column: 1 / 4; grid-row: 1; }
+.c-house h2 { font-weight: 200; font-size: var(--t-title); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 0; }
+.c-house .hd p { font-weight: 300; font-size: var(--t-lead); line-height: 1.55; color: var(--c-soft); margin: 18px 0 0; }
+.c-house .act { margin-top: clamp(34px, 5vh, 56px); }
+.c-house .sheet { grid-column: 1 / 4; grid-row: 2; margin: 0; width: 90%; }
+.c-house .sheet img { width: 100%; height: auto; display: block; aspect-ratio: 2400 / 1500; }   /* king, queen, rook (tools/bl_pieces.py) */
+.c-house .assembly { --gap: clamp(20px, 2.2vw, 44px); --top: 64px; --n: 3; grid-column: 5 / 9; grid-row: 1 / 3; align-self: center; position: relative; padding-top: var(--top); container-type: inline-size; }
+.c-house .three { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--n), 1fr); column-gap: var(--gap); }
+.c-house .assembly { --pw: calc((100cqw - (var(--n) - 1) * var(--gap)) / var(--n)); }   /* one plate's width */
+/* the dimension over the group: extension lines from the outer plates, the line with its 45 degree ticks, the label above */
+.c-house .dim { position: absolute; left: 0; right: 0; top: 0; height: var(--top); pointer-events: none; }
+.c-house .dim i { position: absolute; background: var(--c-hair); }
+.c-house .dim .ln { left: 0; right: 0; top: 22px; height: 1px; }
+.c-house .dim .t { top: 18px; width: 1px; height: 9px; transform: rotate(45deg); background: var(--c-soft); }
+.c-house .dim .t.l { left: 0; } .c-house .dim .t.r { right: 0; }
+.c-house .dim .x { top: 14px; bottom: 6px; width: 1px; }
+.c-house .dim .x.l { left: 0; } .c-house .dim .x.r { right: 0; }
+.c-house .dim span { position: absolute; left: 50%; top: 0; transform: translateX(-50%); font-weight: 400; font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); white-space: nowrap; }
+/* the centre line through the plates' middles, dash and dot, running past the group on both sides */
+.c-house .cl { position: absolute; z-index: 0; left: -36px; right: -36px; height: 1px; top: calc(var(--top) + var(--pw) * 0.625);
+  background: repeating-linear-gradient(90deg, var(--c-hair) 0 18px, transparent 18px 23px, var(--c-hair) 23px 26px, transparent 26px 31px); }
+.c-person { margin: 0; }
+.c-person .ph { position: relative; aspect-ratio: 4 / 5; isolation: isolate; display: grid; place-items: center; }
+.c-person .ph > svg.sh-body, .c-person .ph > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; z-index: -1; }
+.c-person .ph > svg.sh-hatch { display: none; }
+.c-person .ph .sh-body .o { fill: var(--paper-lit); stroke: var(--c-soft); stroke-width: 1; }
+.c-person .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-clip-path: var(--clip-out); clip-path: var(--clip-out); }
+.c-person .ph .cx { display: none; }
+.c-person .ini { font-weight: 200; font-size: clamp(22px, 1.7vw, 32px); letter-spacing: 0.06em; color: var(--c-faint); }
+.c-person figcaption { margin-top: 18px; }
+.c-person .n { display: block; font-weight: 300; font-size: 11px; letter-spacing: 0.1em; color: var(--c-faint); margin-bottom: 8px; }
+.c-person .nm { font-weight: 300; font-size: clamp(15px, 1.05vw, 19px); line-height: 1.25; color: var(--c-ink); margin: 0; }
+.c-person .rl { font-weight: 400; font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-faint); margin: 8px 0 0; }
+/* under the three: the people across the products, one line on a hairline */
+.c-house .more { margin: clamp(30px, 4vh, 48px) 0 0; padding-top: 18px; border-top: 1px solid var(--c-hair); font-weight: 300; font-size: var(--t-lead); line-height: 1.5; color: var(--c-soft); }
+
+/* the close of the page, and the contact page: an assembly drawing. The drawing in the left half with a dot on each
+   part; the title and the addresses in the right half as large rows, each with its balloon; leaders run from the
+   parts to the balloons (contact.js). On the landing a button under the rows leads on to the channels. */
+.l-contact { padding-top: clamp(220px, 34vh, 440px); padding-bottom: clamp(60px, 10vh, 140px); }
+.c-asm { position: relative; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: auto auto; align-items: start; }
+.c-asm .ttl { grid-column: 5 / 9; grid-row: 1; margin-bottom: clamp(34px, 5vh, 60px); }
+.c-asm .ttl h1, .c-asm .ttl h2 { font-weight: 200; font-size: clamp(30px, 2.5vw, 46px); line-height: 1; letter-spacing: -0.025em; color: var(--c-ink); margin: 0; }
+.c-asm .ttl p { font-weight: 300; font-size: 15px; line-height: 1.5; color: var(--c-soft); margin: 12px 0 0; }
+.c-asm .fig { grid-column: 1 / 5; grid-row: 1 / 3; position: relative; margin-right: 2.4vw; }
+.c-asm .fig img { display: block; width: 100%; height: auto; aspect-ratio: 1800 / 927; }
+.c-asm .pt { position: absolute; z-index: 2; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: var(--c-soft); cursor: default; transition: transform 0.35s var(--ease-pen), background 0.35s; }
+.c-asm .pt b { display: none; }
+.c-asm .pt.on { background: var(--c-ink); transform: scale(1.5); }
+.c-asm .side { grid-column: 5 / 9; grid-row: 2; display: grid; row-gap: clamp(12px, 1.2vw, 18px); }
+/* an address: its balloon outside on the left, then a plate cut like the buttons; on hover the band along the outline
+   hatches (the pencil pass) and the balloon hatches with it */
+.c-asm .call { position: relative; display: grid; grid-template-columns: 34px 1fr; column-gap: 18px; align-items: center; color: var(--c-ink); text-decoration: none; outline: none; }
+.c-asm .plate { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 20px; grid-template-rows: auto auto; column-gap: 18px; row-gap: 6px; align-items: center; padding: clamp(16px, 1.5vw, 22px) clamp(18px, 1.6vw, 26px); }
+.c-asm .plate > svg.sh-body, .c-asm .plate > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; z-index: -1; }
+.c-asm .plate > svg.sh-hatch { color: rgba(106, 102, 96, 0.34); }
+.c-asm .plate .sh-hatch line { stroke: currentColor; stroke-width: 1; }
+.c-asm .plate .sh-body .o { fill: none; stroke: var(--c-hair); stroke-width: 1; transition: stroke 0.6s ease; }
+.c-asm .call:hover .plate .sh-body .o, .c-asm .call.on .plate .sh-body .o, .c-asm .call:focus-visible .plate .sh-body .o { stroke: var(--c-ink); transition-duration: 0.35s; }
+.c-asm .bal { position: relative; isolation: isolate; overflow: hidden; width: 34px; height: 34px; border: 1px solid var(--c-soft); border-radius: 50%; display: grid; place-items: center; font-weight: 300; font-size: 13px; color: var(--c-ink); background: var(--paper); transition: border-color 0.35s; }
+.c-asm .bal i { position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(135deg, transparent 0 3px, rgba(106, 102, 96, 0.34) 3px 4px); }
+.c-asm .k { grid-column: 1; font-weight: 400; font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); }
+.c-asm .m { grid-column: 1; font-weight: 200; font-size: clamp(18px, 1.45vw, 27px); line-height: 1.1; letter-spacing: -0.01em; color: var(--c-soft); transition: color 0.35s; white-space: nowrap; }
+.c-asm .plate .arr { grid-column: 2; grid-row: 1 / 3; width: 20px; color: var(--c-soft); }
+.c-asm .call.on .bal, .c-asm .call:hover .bal, .c-asm .call:focus-visible .bal { border-color: var(--c-ink); }   /* hatched, never filled */
+.c-asm .call.on .m, .c-asm .call:hover .m, .c-asm .call:focus-visible .m { color: var(--c-ink); }
+.c-asm .leaders { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 1; }
+.c-asm .leaders path { fill: none; stroke: var(--c-soft); stroke-width: 1; opacity: 0.7; transition: stroke 0.35s, opacity 0.35s; }
+.c-asm .leaders path.on { stroke: var(--c-ink); opacity: 1; }
+.c-asm .more { justify-self: start; margin: clamp(10px, 1.6vh, 22px) 0 0 52px; }   /* under the plates, past the balloons' column */
+
+/* the footer as the foot of an architect's sheet: the eight columns' nine axes start just over a dimension
+   chain, the way extension lines overshoot, and run down through the footer in dash-dot; the content stands in the bays; the title block closes the sheet */
+.l-foot { padding-top: clamp(140px, 20vh, 260px); padding-bottom: clamp(36px, 5vh, 60px); }
+.c-foot--arch { position: relative; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: 28px auto auto; padding-top: 0; row-gap: 0; }
+/* the axes span the head and the bays and stop at the title block's top edge; nothing here is filled, the paper shows through */
+.c-foot--arch .axes { grid-column: 1 / -1; grid-row: 1 / 3; position: relative; pointer-events: none; }
+.c-foot--arch .ax { position: absolute; top: 0; bottom: 0; left: calc(var(--k) * 100% / 8); width: 1px; }
+.c-foot--arch .ax::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+  background: repeating-linear-gradient(180deg, rgba(106, 102, 96, 0.3) 0 16px, transparent 16px 21px, rgba(106, 102, 96, 0.3) 21px 24px, transparent 24px 29px); }
+.c-foot--arch .ax.s::after { bottom: auto; height: 28px; }
+.c-foot--arch .chain { position: absolute; left: 0; right: 0; top: 14px; height: 1px; background: var(--c-hair); }
+/* each axis ticks the chain where it crosses it, 45 degrees, as a dimension line is ticked */
+.c-foot--arch .ax::before { content: ''; position: absolute; left: 0; top: 10px; width: 1px; height: 9px; background: var(--c-soft); transform: rotate(45deg); }
+.c-foot--arch .brand { grid-column: 1 / 4; grid-row: 2; display: flex; align-items: flex-end; gap: 20px; padding: 34px 18px 40px 18px; }
+.c-foot--arch .brand .mk { width: 48px; }
+.c-foot--arch .brand .mk img { width: 100%; height: auto; display: block; aspect-ratio: 2400 / 2930; }
+.c-foot--arch .brand .w { display: block; font-weight: 200; font-size: clamp(30px, 2.3vw, 44px); line-height: 0.95; letter-spacing: -0.02em; color: var(--c-ink); }
+.c-foot--arch .brand .mt { display: block; margin-top: 10px; font-weight: 400; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); }
+.c-foot--arch .col { grid-row: 2; padding: 34px 18px 40px; font-weight: 300; font-size: 13px; line-height: 2; letter-spacing: 0.02em; color: var(--c-soft); }
+.c-foot--arch .col .lbl { margin-bottom: 10px; }
+.c-foot--arch .col a { display: block; white-space: nowrap; color: inherit; text-decoration: none; transition: color 0.3s; }
+.c-foot--arch .col a:hover { color: var(--c-ink); }
+.c-foot--arch .c1 { grid-column: 4 / 5; } .c-foot--arch .c2 { grid-column: 5 / 6; } .c-foot--arch .c3 { grid-column: 6 / 7; } .c-foot--arch .c4 { grid-column: 7 / 9; }
+.c-foot--arch .c5, .c-foot--arch .col a .p { display: none; }   /* narrow screens only: the channels' bay, the purpose of each address */
+/* the title block, its cells on the axes */
+.c-foot--arch .tblock { grid-column: 1 / 9; grid-row: 3; position: relative; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border: 1px solid var(--c-soft); }
+.c-foot--arch .cell { display: flex; flex-direction: column; gap: 6px; padding: 12px 18px 13px; }
+.c-foot--arch .cell + .cell { border-left: 1px solid var(--c-hair); }
+.c-foot--arch .f1 { grid-column: 1 / 4; } .c-foot--arch .f2 { grid-column: 4 / 5; } .c-foot--arch .f3 { grid-column: 5 / 6; } .c-foot--arch .f4 { grid-column: 6 / 9; }   /* the cells on the axes that run down ("Decisions, position" fits one bay from 1441 up) */
+.c-foot--arch .fl { font-weight: 400; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); }
+.c-foot--arch .v { font-weight: 300; font-size: 14px; color: var(--c-ink); }
+.c-foot--arch .v.ch { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.c-foot--arch .v.ch a { color: var(--c-soft); text-decoration: none; transition: color 0.3s; }
+.c-foot--arch .v.ch a:hover { color: var(--c-ink); }
+
+/* at 1440 and below eight bays are too narrow for a column of links: the footer is laid on four, one column per bay, the house's
+   name set over the grid like the heading of a sheet (900 stacks it all onto the phone's two columns) */
+@media (max-width: 1440px) {
+  .c-foot--arch { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto 28px auto auto; }
+  .c-foot--arch .brand { grid-column: 1 / -1; grid-row: 1; padding: 0 18px 44px; }
+  .c-foot--arch .axes { grid-row: 2 / 4; }
+  .c-foot--arch .ax { left: calc(var(--k) * 100% / 4); }
+  .c-foot--arch .ax:nth-child(n + 6) { display: none; }
+  .c-foot--arch .ax.s::after { bottom: 0; height: auto; }
+  .c-foot--arch .col { grid-row: 3; }
+  .c-foot--arch .c1 { grid-column: 1 / 2; } .c-foot--arch .c2 { grid-column: 2 / 3; } .c-foot--arch .c3 { grid-column: 3 / 4; } .c-foot--arch .c4 { grid-column: 4 / 5; }
+  .c-foot--arch .tblock { grid-row: 4; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .c-foot--arch .f1 { grid-column: 1 / 2; } .c-foot--arch .f2 { grid-column: 2 / 3; } .c-foot--arch .f3 { grid-column: 3 / 4; } .c-foot--arch .f4 { grid-column: 4 / 5; }
+}
+
+/* steps: 1100 tightens, 900 stacks everything onto one column, 640 is the phone */
+@media (max-width: 1240px) {
+  .c-nav { grid-template-columns: auto 1fr; column-gap: 40px; }
+  .c-nav .right { display: none; }
+  .c-nav ul { justify-content: flex-end; gap: 30px; }
+}
+@media (max-width: 1100px) {
+  .c-hero0 .lt .x { stroke-dasharray: 12 4 2 4; }   /* shorter dashes for the smaller letters */
+  .c-trio .it:nth-child(1) { grid-column: 1 / 4; } .c-trio .it:nth-child(2) { grid-column: 4 / 7; } .c-trio .it:nth-child(3) { grid-column: 7 / 9; padding-right: 0; }
+  .c-family .story { grid-column: 5 / 9; }
+}
+@media (max-width: 900px) {
+  .c-asm { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 26px; }
+  .c-asm .ttl, .c-asm .fig, .c-asm .side { grid-column: 1 / -1; grid-row: auto; margin: 0; }
+  .c-asm .leaders { display: none; }
+  .c-asm .pt { width: 22px; height: 22px; margin: -11px 0 0 -11px; background: var(--paper-lit); border: 1px solid var(--c-soft); display: grid; place-items: center; }
+  .c-asm .pt b { display: block; font-weight: 300; font-style: normal; font-size: 11px; color: var(--c-ink); }
+  .c-asm .call { grid-template-columns: 30px 1fr; column-gap: 12px; }
+  .c-asm .bal { width: 30px; height: 30px; font-size: 12px; }
+  .c-asm .plate { padding: 14px 16px; }
+  .c-asm .m { white-space: normal; font-size: 19px; }
+  .c-asm .more { margin-left: 42px; }
+  :root { --sec: clamp(90px, 12vh, 140px); }
+  .c-nav { grid-template-columns: 1fr auto; row-gap: 22px; }
+  .c-nav .right { display: none; }
+  .c-nav ul { grid-column: 1 / -1; justify-content: flex-start; gap: 26px; flex-wrap: wrap; }
+  .c-navsheet { display: none; }
+  .c-hero .t, .c-hero .side { grid-column: 1 / 9; }
+  .c-hero .side { grid-row: 4; margin-top: 34px; }
+  .c-head { grid-template-columns: 1fr; row-gap: 18px; }
+  .c-head .n, .c-head .t, .c-head .vignette, .c-head .lbl { grid-column: 1 / -1; padding-left: 0; }
+  .c-head .vignette { max-width: 220px; }
+  .c-proj, .c-proj--tall, .c-proj--rev { grid-template-columns: 1fr; row-gap: 34px; }
+  .c-proj .draw, .c-proj .text, .c-proj--tall .draw, .c-proj--tall .text, .c-proj--rev .draw, .c-proj--rev .text,
+  .c-proj--rev.c-proj--tall .draw, .c-proj--rev.c-proj--tall .text, .c-proj .figline { grid-column: 1 / -1; }
+  .c-proj--rev .draw { order: -1; }
+  .l-proj { min-height: 0; }
+  .c-pp { grid-template-columns: 1fr; row-gap: 36px; }
+  .c-pp .plate, .c-pp .side, .c-pp--rev .plate, .c-pp--rev .side, .c-pp .figline { grid-column: 1 / -1; grid-row: auto; padding: 0; }
+  .c-pp .draw img { max-width: 320px; }
+  .c-prod .float-plate { grid-column: 1 / -1; }
+  .c-trio { grid-template-columns: 1fr; row-gap: 44px; }
+  .c-trio .it:nth-child(n) { grid-column: 1 / -1; padding-right: 0; }
+  .c-prod { grid-template-columns: 1fr; row-gap: 40px; }
+  .c-prod .float, .c-prod .side { grid-column: 1 / -1; }
+  .c-sched td.n { width: 12%; } .c-sched td.name { width: auto; } .c-sched td.desc { display: none; } .c-sched td.st { width: auto; }
+  .l-work { grid-template-columns: 1fr; row-gap: 30px; }
+  .l-work .c-fig, .l-work .note { grid-column: 1 / -1; margin: 0; }
+  .c-family { grid-template-columns: 1fr; row-gap: 44px; }
+  .c-family .c-fig, .c-family .story { grid-column: 1 / -1; padding-top: 0; }
+  .c-pause .t { grid-column: 1 / -1; }
+  .c-pause .facts { grid-template-columns: 1fr; }
+  .c-pause .facts > div { padding: 22px 0; border-bottom: 1px solid var(--c-hair); }
+  .l-pause .l-bg { display: none; }
+  .c-house { grid-template-columns: 1fr; }
+  .c-house .side, .c-house .assembly, .c-house .sheet { grid-column: 1 / -1; grid-row: auto; }
+  .c-house .sheet { max-width: 520px; width: 100%; }
+  .l-team .l-bg { display: none; }
+  .c-say { grid-template-columns: 1fr; row-gap: 18px; }
+  .c-say .lbl, .c-say .t { grid-column: 1 / -1; }
+  .l-say .l-bg { display: none; }
+  /* two bays. Each row of bays is a level: a hairline ticked at 45 degrees where the axes cross it, the axes
+     (dash-dot, drawn by each bay on its own edges) run on down to the title block; the middle axis stops at the
+     level of the addresses, which run across both bays as a schedule (address, its purpose) */
+  .c-foot--arch { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
+  .c-foot--arch .axes { display: none; }
+  .c-foot--arch .brand { grid-column: 1 / -1; grid-row: auto; padding: 0 0 40px; }
+  .c-foot--arch .col { --dd: repeating-linear-gradient(180deg, rgba(106, 102, 96, 0.3) 0 16px, transparent 16px 21px, rgba(106, 102, 96, 0.3) 21px 24px, transparent 24px 29px);
+    --tick: linear-gradient(to bottom right, transparent calc(50% - 0.6px), var(--c-soft) calc(50% - 0.6px) calc(50% + 0.6px), transparent calc(50% + 0.6px));
+    position: relative; grid-row: auto; padding: 46px 16px 30px; background: var(--dd) left top / 1px 100% no-repeat; }
+  .c-foot--arch .col::before { content: ''; position: absolute; top: 10px; left: -4px; right: -4px; height: 9px; pointer-events: none;
+    background: linear-gradient(var(--c-hair), var(--c-hair)) 4px center / calc(100% - 8px) 1px no-repeat, var(--tick) left center / 9px 9px no-repeat; }
+  .c-foot--arch .c2, .c-foot--arch .c5 { background: var(--dd) left top / 1px 100% no-repeat, var(--dd) right top / 1px 100% no-repeat; }
+  .c-foot--arch .c2::before, .c-foot--arch .c5::before {
+    background: linear-gradient(var(--c-hair), var(--c-hair)) 4px center / calc(100% - 8px) 1px no-repeat, var(--tick) left center / 9px 9px no-repeat, var(--tick) right center / 9px 9px no-repeat; }
+  .c-foot--arch .col a { white-space: normal; }
+  .c-foot--arch .c1 { grid-column: 1 / 2; } .c-foot--arch .c2 { grid-column: 2 / 3; }
+  .c-foot--arch .c3 { grid-column: 1 / 2; grid-row: 3; } .c-foot--arch .c5 { display: block; grid-column: 2 / 3; grid-row: 3; }
+  .c-foot--arch .c4 { grid-column: 1 / -1; grid-row: 4; padding-bottom: 34px;
+    background: var(--dd) left top / 1px 100% no-repeat, var(--dd) right top / 1px 100% no-repeat,
+      linear-gradient(rgba(106, 102, 96, 0.3), rgba(106, 102, 96, 0.3)) 50% 0 / 1px 19px no-repeat; }   /* the middle axis ends here, through the level */
+  .c-foot--arch .c4::before {
+    background: linear-gradient(var(--c-hair), var(--c-hair)) 4px center / calc(100% - 8px) 1px no-repeat, var(--tick) left center / 9px 9px no-repeat,
+      var(--tick) center center / 9px 9px no-repeat, var(--tick) right center / 9px 9px no-repeat; }
+  .c-foot--arch .c4 a { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0 11px; border-top: 1px solid var(--c-hair); }
+  .c-foot--arch .c4 .lbl + a { border-top: 0; }
+  .c-foot--arch .c4 a .p { display: block; flex: none; font-weight: 400; font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-faint); }
+  .c-foot--arch .tblock { grid-column: 1 / -1; grid-row: 5; grid-template-columns: 1fr 1fr; margin-top: 0; }
+  .c-foot--arch .f4 { display: none; }   /* the channels have their bay */
+  .c-foot--arch .f1 { grid-column: 1 / -1; } .c-foot--arch .f2 { grid-column: 1 / 2; } .c-foot--arch .f3 { grid-column: 2 / 3; }
+  .c-foot--arch .cell + .cell { border-left: 0; border-top: 1px solid var(--c-hair); }
+  .c-foot--arch .f3 { border-left: 1px solid var(--c-hair) !important; }
+  .c-foot .base { grid-column: 1 / -1; flex-direction: column; gap: 8px; }
+}
+@media (max-width: 640px) {
+  .c-hero0 .lt .x { display: none; }   /* inside a stroke a few pixels wide the axis turns to a row of rivets: the outline alone */
+  .c-hero0 .lt .o { stroke-width: 1; }
+  :root { --gutter: 16px; }
+  .c-nav { padding: 16px 0 14px; row-gap: 0; }          /* one low bar: the mark and the Menu button (components.css) */
+  .c-nav ul { display: none; }
+  .c-nav .brand { gap: 14px; }
+  .c-nav .mark { width: 26px; height: 31.7px; }
+  .c-nav .word { font-size: 12px; }
+  .c-hero .figline, .c-proj .figline, .l-full figcaption, .c-fig figcaption, .c-show-cap { grid-template-columns: auto 1fr; }
+  .c-hero .figline .lbl:last-child, .c-proj .figline .lbl:last-child, .l-full figcaption .lbl:last-child, .c-fig figcaption .lbl:last-child, .c-show-cap .lbl:last-child { grid-column: 1 / -1; letter-spacing: 0.2em; }
+  .c-family .two-p { grid-template-columns: 1fr; gap: 30px; }
+  .c-shape { padding-left: 20px; padding-right: 24px; }
+  .l-group { grid-template-columns: auto 1fr; }
+  .c-house .assembly { --gap: 12px; --top: 52px; }
+  .c-house .cl { left: -10px; right: -10px; }
+  .c-person .nm { font-size: 13px; }
+  .c-person .rl { font-size: 9px; letter-spacing: 0.18em; }
+  .c-person .ini { font-size: 18px; }
+  .l-group .lbl:last-child { grid-column: 1 / -1; }
+  /* the phone pass (2026-10-25): no stray marks, no long empty stretches, targets a finger can hit */
+  .c-hero0 .lt .d { display: none; }                  /* the lettering's height dimension read as a stray bar beside W144 */
+  .c-show-cap { display: none; }                      /* the card under the screen already names the product */
+  .l-show + .l-show { margin-top: 72px; }
+  .l-pause { padding-top: 120px; }
+  .l-team, .l-contact { padding-top: 130px; }
+  .c-foot--arch .col a { padding: 4px 0; }           /* 26 px rows grow to 34 */
+  .c-foot--arch .v.ch { gap: 0 18px; }
+  .c-foot--arch .v.ch a { padding: 6px 0; }
+}
