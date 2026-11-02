@@ -1,0 +1,571 @@
+/* w144.company components. One voice: Riviera Nights in thin weights, grey ink multiplied into the sheet,
+   the drafting language for chrome (hairlines with ticks, wide small labels, numbered items). */
+:root {
+  --c-ink: var(--ink); --c-soft: var(--ink-soft); --c-faint: var(--ink-faint);
+  --c-hair: rgba(106, 102, 96, 0.28);
+  --t-giant: clamp(40px, 3.4vw, 66px);
+  --t-title: clamp(24px, 1.9vw, 36px);
+  --t-lead: clamp(15px, 0.95vw, 18px);
+  --t-body: 15px;
+  --t-lbl: 11.5px;
+}
+.ink { mix-blend-mode: multiply; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }   /* read by search engines and screen readers, not shown */
+.lbl { font-weight: 400; font-size: var(--t-lbl); letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); margin: 0; }
+.num { font-weight: 300; font-variant-numeric: tabular-nums; }
+
+/* hairline with drafting ticks at both ends */
+.c-rule { position: relative; height: 1px; background: var(--c-hair); margin: 0; border: 0; }
+.c-rule::before, .c-rule::after { content: ''; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--c-hair); transform: rotate(45deg); }
+.c-rule::before { left: 0; } .c-rule::after { right: 0; }
+
+/* C00 hero: the Institute from across the river, full width, the house's name beneath it on the columns */
+.c-hero { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: auto auto auto; row-gap: 0; }
+.c-hero .sheet { grid-column: 1 / 9; grid-row: 1; }
+.c-hero .figline { grid-row: 2; }
+.c-hero .t, .c-hero .side { grid-row: 3; }
+.c-hero .sheet img { width: 100%; height: auto; display: block; }
+.c-hero .t { grid-column: 1 / 6; margin-top: clamp(40px, 5vh, 80px); }
+.c-hero .t h1 { font-weight: 200; font-size: clamp(44px, 4.6vw, 86px); line-height: 1.02; letter-spacing: -0.02em; margin: 0; color: var(--c-ink); }
+.c-hero .t p { font-weight: 300; font-size: var(--t-lead); line-height: 1.5; color: var(--c-soft); margin: 22px 0 0; max-width: 30em; }
+.c-hero .side { grid-column: 7 / 9; align-self: end; margin-top: clamp(40px, 5vh, 80px); }
+.c-hero .figline { grid-column: 1 / 9; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 22px; }
+
+/* C01 navigation */
+.c-nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 34px 0 26px; }
+.c-nav .brand { display: flex; align-items: center; gap: 18px; }
+.c-nav .mark { display: block; width: 34px; height: 41.5px; }   /* the full mark (owner 2026-10-24), its own proportions 598 : 730 */
+.c-nav .mark svg { width: 100%; height: 100%; }
+/* drawn for 598 units, at 34 px its lines would vanish: they keep a screen weight instead, the outlines 0.85 px, the fine lines 0.5 px
+   (each rod is a band with an outline on both sides: heavier, and the two merge into one dark line) */
+.c-nav .mark svg path, .c-nav .mark svg circle, .c-nav .mark svg ellipse { vector-effect: non-scaling-stroke; }
+.c-nav .mark svg [stroke-width] { stroke-width: 0.5px; }
+.c-nav .mark svg [stroke-width="2.8"], .c-nav .mark svg [stroke-width="2.2"], .c-nav .mark svg [stroke-width="1.6"] { stroke-width: 0.85px; }
+.c-nav .word { font-weight: 400; font-size: 13px; letter-spacing: 0.34em; color: var(--c-ink); }
+.c-nav ul { display: flex; gap: 40px; list-style: none; margin: 0; padding: 0; justify-content: center; }
+.c-nav a.item { position: relative; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-soft); text-decoration: none; outline: none; transition: color 0.45s ease; }
+.c-nav a.item[aria-current] { color: var(--c-ink); }
+.c-nav ul.pointing a.item { color: var(--c-faint); }
+.c-nav ul.pointing a.item.on { color: var(--c-ink); transition-duration: 0.25s; }
+.c-nav a.item .pl { display: inline-block; margin-left: 0.55em; font-weight: 200; letter-spacing: 0; transition: transform 0.6s var(--ease-pen); }
+.c-nav a.item[aria-expanded="true"] .pl { transform: rotate(45deg); }
+
+/* the rule under the navigation and its marker: a dimension of the word the pointer is on */
+.c-navbar { position: relative; z-index: 30; }
+.c-navrule { position: relative; }
+.c-navrule .mk { position: absolute; left: 0; top: 0; height: 1px; width: var(--w, 0px); transform: translateX(var(--x, 0px)); background: var(--c-ink); opacity: 0; pointer-events: none;
+  transition: transform 0.7s var(--ease-pen), width 0.7s var(--ease-pen), opacity 0.5s ease; }
+.c-navrule .mk.ready { opacity: 1; }
+.c-navrule .mk.instant { transition: none; }
+.c-navrule .mk::before, .c-navrule .mk::after { content: ''; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--c-ink); transform: rotate(45deg); }
+.c-navrule .mk::before { left: 0; } .c-navrule .mk::after { right: 0; }
+.c-navrule .mk .ext { position: absolute; bottom: 0; width: 1px; height: 12px; background: var(--c-ink); }
+.c-navrule .mk .ext.l { left: 0; } .c-navrule .mk .ext.r { right: 0; }
+.c-navrule .mk .lead { position: absolute; left: 50%; top: 0; width: 1px; height: 0; background: var(--c-soft); transition: height 0.45s var(--ease-pen); }
+.c-navbar.has-sheet .c-navrule .mk .lead { height: 26px; transition-duration: 0.6s; }
+
+/* the sheet: a lighter leaf laid over the page, lit by the same lamp; rows come in one after another */
+/* never taller than the screen below it: nav.js sets max-height on opening; past that the sheet scrolls itself and
+   the page under it holds still. The grain rides with the content (local), so a scrolled sheet stays paper. */
+.c-navsheet { position: absolute; left: 0; right: 0; top: calc(100% + 26px); display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); column-gap: 32px; padding: 46px 48px 44px;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--c-hair) transparent;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .03 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E") local, var(--paper-lit); isolation: isolate; mix-blend-mode: normal; color: var(--c-ink);
+  box-shadow: 0 0 0 1px rgba(60, 55, 50, 0.05), calc(var(--ldx, 0) * -6px) calc(var(--ldy, -1) * -6px) 14px rgba(60, 55, 50, 0.08), calc(var(--ldx, 0) * -30px) calc(var(--ldy, -1) * -30px) 70px rgba(60, 55, 50, 0.16);
+  opacity: 0; visibility: hidden; transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.45s var(--ease-pen), visibility 0s linear 0.45s; }
+.c-navsheet.open { opacity: 1; visibility: visible; transform: none; transition: opacity 0.35s ease, transform 0.7s var(--ease-pen), visibility 0s; }
+.c-navsheet .hd { grid-column: 1 / 4; padding-right: 12px; }
+.c-navsheet .hd .lbl { margin: 0 0 18px; color: var(--c-soft); }
+.c-navsheet .hd .note { margin: 0; max-width: 220px; font-weight: 300; font-size: 14px; line-height: 1.6; color: var(--c-soft); }
+.c-navsheet .rows { grid-column: 4 / 9; border-bottom: 1px solid var(--c-hair); }
+.c-navsheet .grp { margin: 0; padding: 22px 0 12px; color: var(--c-faint); opacity: 0; transform: translateY(8px); transition: opacity 0.25s ease, transform 0.4s var(--ease-pen); }
+.c-navsheet .grp:first-child { padding-top: 0; }
+.c-navsheet.open .grp { opacity: 1; transform: none; transition: opacity 0.5s ease calc(140ms + var(--k, 0) * 70ms), transform 0.8s var(--ease-pen) calc(140ms + var(--k, 0) * 70ms); }
+.c-navsheet .row { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1.15fr) minmax(0, 1fr) 140px 24px; align-items: baseline; column-gap: 24px; padding: 22px 0 21px;
+  border-top: 1px solid var(--c-hair); color: var(--c-ink); text-decoration: none; outline: none;
+  opacity: 0; transform: translateY(8px); transition: opacity 0.25s ease, transform 0.4s var(--ease-pen); }
+.c-navsheet.open .row { opacity: 1; transform: none; transition: opacity 0.5s ease calc(140ms + var(--k, 0) * 70ms), transform 0.8s var(--ease-pen) calc(140ms + var(--k, 0) * 70ms); }
+.c-navsheet .row .n { font-weight: 300; font-size: 11px; letter-spacing: 0.1em; color: var(--c-faint); font-variant-numeric: tabular-nums; }
+.c-navsheet .row .nm { font-weight: 300; font-size: 22px; letter-spacing: -0.005em; color: var(--c-soft); transition: color 0.45s ease; }
+.c-navsheet .row .ti { font-weight: 300; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-soft); transition: color 0.45s ease; }
+.c-navsheet .row .st { font-weight: 300; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--c-faint); text-align: right; }
+.c-navsheet .row .arr { align-self: center; color: var(--c-soft); transition: color 0.45s ease; }
+/* the row's top hairline is drawn over in ink by the pen on hover, and fades on leave */
+.c-navsheet a.row::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--c-ink); transform: scaleX(0); transform-origin: 0 50%; opacity: 0;
+  transition: opacity 0.45s ease, transform 0s linear 0.45s; }
+.c-navsheet a.row:hover::before, .c-navsheet a.row:focus-visible::before, .c-navsheet a.row.is-hover::before { transform: scaleX(1); opacity: 1; transition: opacity 0.2s ease, transform 0.9s var(--ease-pen); }
+.c-navsheet a.row:hover .nm, .c-navsheet a.row:hover .ti, .c-navsheet a.row:hover .arr,
+.c-navsheet a.row:focus-visible .nm, .c-navsheet a.row:focus-visible .ti, .c-navsheet a.row:focus-visible .arr,
+.c-navsheet a.row.is-hover .nm, .c-navsheet a.row.is-hover .ti, .c-navsheet a.row.is-hover .arr { color: var(--c-ink); transition-duration: 0.25s; }
+/* the row in hand (pointer or focus, the first one when the sheet opens) is marked like a hovered one: its line drawn in */
+.c-navsheet .row.on::before { transform: scaleX(1); opacity: 1; transition: opacity 0.2s ease, transform 0.9s var(--ease-pen); }
+.c-navsheet div.row::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--c-ink); transform: scaleX(0); transform-origin: 0 50%; opacity: 0; transition: opacity 0.4s ease, transform 0.6s var(--ease-pen); }
+.c-navsheet .row.on .nm, .c-navsheet .row.on .ti, .c-navsheet .row.on .arr { color: var(--c-ink); transition-duration: 0.25s; }
+/* the preview pane: the project's screen in a plate cut like the buttons, the outline drawn over its edge; the screens
+   cross-fade, the new one settling from a touch larger; its line under it (.pvc: .caps is the capitals utility) */
+.c-navsheet .pv { position: relative; isolation: isolate; margin-top: 36px; aspect-ratio: 16 / 9; }
+.c-navsheet .pv > svg.sh-body, .c-navsheet .pv > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; z-index: 2; }
+.c-navsheet .pv > svg.sh-hatch { display: none; }
+.c-navsheet .pv .sh-body .o { fill: none; stroke: var(--c-soft); stroke-width: 1; }
+.c-navsheet .pv .scr { position: absolute; inset: 0; overflow: hidden; -webkit-clip-path: var(--clip-out); clip-path: var(--clip-out); background: var(--paper-lit); }
+.c-navsheet .pv img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.03); transition: opacity 0.45s ease, transform 0.9s var(--ease-pen); }
+.c-navsheet .pv img.on { opacity: 1; transform: none; }
+.c-navsheet .pvc { position: relative; margin-top: 18px; min-height: 46px; }
+.c-navsheet .pvc p { position: absolute; left: 0; right: 0; top: 0; margin: 0; opacity: 0; transform: translateY(4px); transition: opacity 0.3s ease, transform 0.5s var(--ease-pen); }
+.c-navsheet .pvc p.on { opacity: 1; transform: none; transition-delay: 0.08s; }
+.c-navsheet .pvc .ds { display: block; font-weight: 300; font-size: 14px; line-height: 1.55; color: var(--c-soft); max-width: 30em; }
+@media (min-width: 901px) and (max-height: 860px) {   /* a short screen (a laptop): the same sheet set closer, so it mostly fits whole */
+  .c-navsheet { padding: 30px 40px 28px; }
+  .c-navsheet .hd .lbl { margin-bottom: 12px; }
+  .c-navsheet .grp { padding: 14px 0 8px; }
+  .c-navsheet .row { padding: 14px 0 13px; }
+  .c-navsheet .row .nm { font-size: 20px; }
+  .c-navsheet .pv { margin-top: 22px; max-width: 360px; }
+  .c-navsheet .pvc { margin-top: 12px; max-width: 360px; }
+}
+@media (max-width: 1240px) {   /* narrower: the title goes under the name, the status and the arrow keep their line */
+  .c-navsheet .row { grid-template-columns: 32px minmax(0, 1fr) auto 20px; column-gap: 16px; row-gap: 6px; }
+  .c-navsheet .row .nm { font-size: 20px; }
+  .c-navsheet .row .ti { grid-column: 2; grid-row: 2; font-size: 11px; letter-spacing: 0.18em; }
+  .c-navsheet .row .st { white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) { .c-navrule .mk, .c-navsheet, .c-navsheet .row, .c-navsheet .pv img, .c-navsheet .pvc p { transition-duration: 0.01s !important; transition-delay: 0s !important; } }
+.c-nav .right { justify-self: end; font-weight: 300; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-faint); }
+
+/* phones: the bar keeps the mark and a Menu button (the + turns to a cross, as on Projects); the menu is a leaf of
+   lighter paper hung from the rule to the bottom of the screen, the words set large, the current one carrying the
+   desktop's dimension marker; Projects opens in place to the sheet's rows */
+.c-nav .menu, .c-navmob { display: none; }
+@media (max-width: 640px) {
+  .c-nav .menu { display: inline-grid; grid-template-columns: auto auto; justify-items: end; align-items: baseline; justify-self: end; padding: 14px 0 14px 22px; margin: -14px 0; background: none; border: 0; cursor: pointer;
+    font: inherit; font-weight: 400; font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-ink); -webkit-tap-highlight-color: transparent; }
+  .c-nav .menu .t { grid-area: 1 / 1; transition: opacity 0.3s ease; }   /* Menu and Close share one cell: the button keeps its width */
+  .c-nav .menu .c, .c-nav .menu[aria-expanded="true"] .o { opacity: 0; }
+  .c-nav .menu[aria-expanded="true"] .c { opacity: 1; }
+  .c-nav .menu .pl { grid-area: 1 / 2; margin-left: 0.7em; font-weight: 200; font-size: 15px; letter-spacing: 0; line-height: 0; transition: transform 0.6s var(--ease-pen); }
+  .c-nav .menu[aria-expanded="true"] .pl { transform: rotate(45deg); }
+  .c-navrule .mk { display: none; }
+
+  .c-navmob { display: flex; flex-direction: column; position: absolute; top: 100%; left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); box-sizing: border-box;
+    height: calc(100vh - var(--top, 72px)); height: calc(100dvh - var(--top, 72px)); padding: 6px var(--gutter) calc(26px + env(safe-area-inset-bottom));
+    overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .03 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E") local, var(--paper-lit);
+    opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }   /* the leaf only fades: moved, it would bare the page at the screen's foot */
+  .c-navmob.open { opacity: 1; visibility: visible; transition: opacity 0.35s ease, visibility 0s; }
+  .c-navmob ul { list-style: none; margin: 0; padding: 0; }
+  /* opening: the words rise in one after another, each ruled line is drawn left to right with the pen's ease, then
+     the drawing comes up out of the paper and the title block settles */
+  .c-navmob .mi, .c-navmob .fig, .c-navmob .tb { opacity: 0; transform: translateY(8px); transition: opacity 0.25s ease, transform 0.4s var(--ease-pen); }
+  .c-navmob.open .mi, .c-navmob.open .tb { opacity: 1; transform: none; transition: opacity 0.5s ease calc(120ms + var(--k, 0) * 60ms), transform 0.8s var(--ease-pen) calc(120ms + var(--k, 0) * 60ms); }
+  .c-navmob.open .fig { opacity: 1; transform: none; transition: opacity 1.2s ease calc(200ms + var(--k, 0) * 60ms), transform 1.4s var(--ease-pen) calc(200ms + var(--k, 0) * 60ms); }
+  .c-navmob li { position: relative; }
+  .c-navmob li::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--c-hair); transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.3s ease; }
+  .c-navmob.open li::after { transform: none; transition: transform 1s var(--ease-pen) calc(160ms + var(--k, 0) * 70ms); }
+  .c-navmob .mi { display: flex; align-items: baseline; justify-content: space-between; width: 100%; padding: 22px 0 20px; margin: 0; background: none; border: 0; cursor: pointer;
+    font: inherit; font-weight: 200; font-size: 34px; line-height: 1.05; letter-spacing: -0.015em; color: var(--c-soft); text-align: left; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  .c-navmob .mi[aria-current], .c-navmob .mi[aria-expanded="true"] { color: var(--c-ink); }
+  .c-navmob .mi .t { position: relative; }
+  .c-navmob .mi .mk { display: none; position: absolute; left: 0; right: 0; bottom: -8px; height: 1px; background: var(--c-ink); }
+  .c-navmob .mi[aria-current] .mk { display: block; }
+  .c-navmob .mi .mk::before, .c-navmob .mi .mk::after { content: ''; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--c-ink); transform: rotate(45deg); }
+  .c-navmob .mi .mk::before { left: 0; } .c-navmob .mi .mk::after { right: 0; }
+  .c-navmob .mi .pl { font-weight: 200; font-size: 30px; line-height: 0; letter-spacing: 0; transition: transform 0.6s var(--ease-pen); }
+  .c-navmob .mi[aria-expanded="true"] .pl { transform: rotate(45deg); }
+  .c-navmob .sub { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease-pen); }
+  .c-navmob .mi[aria-expanded="true"] + .sub { grid-template-rows: 1fr; }
+  .c-navmob .sub > div { overflow: hidden; min-height: 0; }
+  .c-navmob .grp { padding: 6px 0 10px; }
+  .c-navmob .pr + .grp { padding-top: 26px; }
+  .c-navmob .pr { display: grid; grid-template-columns: minmax(0, 1fr) auto 18px; column-gap: 14px; row-gap: 5px; align-items: baseline; padding: 13px 0 14px; border-top: 1px solid var(--c-hair); color: inherit; text-decoration: none; }
+  .c-navmob .pr:last-child { margin-bottom: 18px; }
+  .c-navmob .pr .nm { grid-column: 1; font-weight: 300; font-size: 19px; color: var(--c-ink); }
+  .c-navmob .pr .ti { grid-column: 1; grid-row: 2; font-weight: 300; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c-soft); }
+  .c-navmob .pr .st { grid-column: 2; grid-row: 1; font-weight: 300; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--c-faint); white-space: nowrap; }
+  .c-navmob .pr .arr { grid-column: 3; grid-row: 1; align-self: center; color: var(--c-soft); }
+  .c-navmob div.pr .nm { color: var(--c-soft); }
+  /* the foot of the sheet: the Academy, shrinking first when the screen is short or Projects is open, then the title block */
+  .c-navmob .fig { flex: 0 1 200px; min-height: 96px; margin: auto 0 0; padding-top: 22px; display: flex; align-items: flex-end; justify-content: center; }
+  .c-navmob .fig img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; opacity: 0.85;   /* ink with its own alpha (bl-institute-b-ink.webp): no blend mode to break while the leaf fades in */
+    -webkit-mask-image: radial-gradient(ellipse 58% 72% at 50% 62%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 58% 72% at 50% 62%, #000 52%, transparent 100%); }
+  .c-navmob .tb { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; margin-top: 14px; border: 1px solid var(--c-soft); }
+  .c-navmob .tb .cell { display: flex; flex-direction: column; gap: 5px; padding: 10px 14px 11px; }
+  .c-navmob .tb .cell + .cell { border-left: 1px solid var(--c-hair); }
+  .c-navmob .tb .cell.am { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--c-hair); padding: 9px 14px 10px; }
+  .c-navmob .tb .fl { font-weight: 400; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); }
+  .c-navmob .tb .v { font-weight: 300; font-size: 14px; color: var(--c-ink); }
+  @media (max-height: 720px) { .c-navmob .fig { display: none; } .c-navmob .tb { margin-top: auto; } }   /* a short screen: the title block alone at the foot */
+  html.menu-open { overflow: hidden; }
+  /* the bar lies on the same leaf while the menu is open: one sheet from the top of the screen, the rule across it */
+  html.menu-open .l-top::before { opacity: 1; box-shadow: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .03 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"), var(--paper-lit); }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) { .c-navmob, .c-navmob .mi, .c-navmob li::after, .c-navmob .fig, .c-navmob .tb, .c-navmob .sub, .c-nav .menu .pl, .c-navmob .mi .pl { transition-duration: 0.01s !important; transition-delay: 0s !important; } }
+
+/* C02 section head */
+.c-head { display: grid; grid-template-columns: repeat(8, 1fr); align-items: end; }
+.c-head .n { grid-column: 1 / 2; font-weight: 200; font-size: var(--t-giant); line-height: 0.9; letter-spacing: -0.03em; color: var(--c-ink); }
+.c-head .t { grid-column: 2 / 6; padding-left: 2vw; }
+.c-head .t h2 { font-weight: 200; font-size: var(--t-title); line-height: 1.08; letter-spacing: -0.015em; margin: 0; color: var(--c-ink); }
+.c-head .t p { font-weight: 300; font-size: var(--t-lead); line-height: 1.5; color: var(--c-soft); margin: 18px 0 0; max-width: 30em; }
+.c-head .lbl { grid-column: 7 / 9; align-self: start; padding-top: 14px; }
+.c-head .vignette { grid-column: 7 / 9; align-self: end; }
+.c-head .vignette img { width: 100%; height: auto; display: block; }
+
+/* C03 project: no frame. The drawing is printed on the page itself, the text stands beside it
+   on the columns, a figure line ties them: the way a plate and its text share a page in a treatise. */
+.c-proj { display: grid; grid-template-columns: repeat(8, 1fr); align-items: end; }
+.c-proj .draw { grid-column: 1 / 5; }
+.c-proj .draw img { width: 100%; height: auto; display: block; }
+.c-proj--tall .draw { grid-column: 1 / 4; } .c-proj--tall .text { grid-column: 5 / 9; }
+.c-proj .draw svg { width: 100%; height: auto; display: block; }
+.c-proj .text { grid-column: 6 / 9; padding-bottom: 6px; }
+.c-proj .dom { font-weight: 400; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); margin: 0; }
+.c-proj .claim { font-weight: 200; font-size: clamp(30px, 2.6vw, 48px); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 12px 0 0; }
+.c-proj .list { font-weight: 300; font-size: 14px; letter-spacing: 0.04em; line-height: 1.95; color: var(--c-soft); margin: 28px 0 0; padding: 0; list-style: none; }
+.c-proj .act { margin-top: 40px; display: flex; gap: 36px; align-items: center; }
+.c-proj .figline { grid-column: 1 / 9; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 30px; }
+.c-proj--rev .draw { grid-column: 5 / 9; } .c-proj--rev .text { grid-column: 1 / 4; }
+.c-proj--rev.c-proj--tall .draw { grid-column: 6 / 9; } .c-proj--rev.c-proj--tall .text { grid-column: 1 / 5; }
+
+/* C04 buttons: the simplicity is paid for in detail. A dimension-line underline with ticks, a corner-mark
+   box with marks that overshoot and slide in on hover, an index set small before the word. */
+.c-link { display: inline-flex; align-items: baseline; gap: 0.7em; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; position: relative; padding-bottom: 9px; }
+.c-link .idx { font-weight: 300; font-size: 10px; letter-spacing: 0.1em; color: var(--c-faint); font-variant-numeric: tabular-nums; }
+.c-link .plus { font-weight: 200; transition: transform 0.4s cubic-bezier(.2,.7,.2,1); }
+.c-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--c-hair); transition: background 0.35s; }
+.c-link::before { content: ''; position: absolute; left: 0; bottom: -4px; width: 1px; height: 9px; background: var(--c-hair); transform: rotate(45deg); transition: background 0.35s; }
+.c-link .tick { position: absolute; right: 0; bottom: -4px; width: 1px; height: 9px; background: var(--c-hair); transform: rotate(45deg); transition: background 0.35s, right 0.4s cubic-bezier(.2,.7,.2,1); }
+.c-link:hover::after, .c-link:hover::before, .c-link:hover .tick { background: var(--c-ink); }
+.c-link:hover .plus { transform: rotate(90deg); }
+
+.c-btn { position: relative; display: inline-flex; align-items: baseline; gap: 0.8em; padding: 15px 26px 14px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; isolation: isolate; }
+.c-btn .idx { font-weight: 300; font-size: 10px; letter-spacing: 0.1em; color: var(--c-faint); }
+.c-btn .box { position: absolute; inset: 0; z-index: -1; border: 1px solid var(--c-hair); transition: border-color 0.35s; }
+.c-btn .m { position: absolute; width: 10px; height: 10px; transition: transform 0.45s cubic-bezier(.2,.7,.2,1), border-color 0.35s; }
+.c-btn .m::before, .c-btn .m::after { content: ''; position: absolute; background: var(--c-soft); }
+.c-btn .m::before { width: 10px; height: 1px; } .c-btn .m::after { width: 1px; height: 10px; }
+.c-btn .m.tl { left: -6px; top: -6px; } .c-btn .m.tl::before { left: 0; top: 0; } .c-btn .m.tl::after { left: 0; top: 0; }
+.c-btn .m.tr { right: -6px; top: -6px; } .c-btn .m.tr::before { right: 0; top: 0; } .c-btn .m.tr::after { right: 0; top: 0; }
+.c-btn .m.bl { left: -6px; bottom: -6px; } .c-btn .m.bl::before { left: 0; bottom: 0; } .c-btn .m.bl::after { left: 0; bottom: 0; }
+.c-btn .m.br { right: -6px; bottom: -6px; } .c-btn .m.br::before { right: 0; bottom: 0; } .c-btn .m.br::after { right: 0; bottom: 0; }
+.c-btn:hover .box { border-color: var(--c-ink); }
+.c-btn:hover .m.tl { transform: translate(6px, 6px); } .c-btn:hover .m.tr { transform: translate(-6px, 6px); }
+.c-btn:hover .m.bl { transform: translate(6px, -6px); } .c-btn:hover .m.br { transform: translate(-6px, -6px); }
+.c-btn .plus { font-weight: 200; }
+.c-btn--solid { color: var(--paper-lit); }
+.c-btn--solid .box { background: var(--c-ink); border-color: var(--c-ink); }
+.c-btn--solid .idx { color: rgba(242, 238, 232, 0.55); }
+.c-btn--solid .m::before, .c-btn--solid .m::after { background: var(--c-ink); }
+
+/* C04b buttons in the drafting language: a dimension chain, a part number, a call-out on hover */
+.c-dim { white-space: nowrap; flex: none; position: relative; display: inline-flex; align-items: baseline; gap: 0.7em; padding: 0 0 26px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; }
+.c-dim .idx { font-weight: 300; font-size: 10px; letter-spacing: 0.1em; color: var(--c-faint); }
+.c-dim .plus { font-weight: 200; }
+.c-dim .ext { position: absolute; bottom: 2px; width: 1px; height: 22px; background: var(--c-hair); transition: background 0.35s, height 0.4s cubic-bezier(.2,.7,.2,1); }
+.c-dim .ext.l { left: 0; } .c-dim .ext.r { right: 0; }
+.c-dim .dimline { position: absolute; left: 0; right: 0; bottom: 7px; height: 1px; background: var(--c-hair); transition: background 0.35s; }
+.c-dim .dimline::before, .c-dim .dimline::after { content: ''; position: absolute; top: -4px; width: 1px; height: 9px; background: var(--c-hair); transform: rotate(45deg); transition: background 0.35s; }
+.c-dim .dimline::before { left: 0; } .c-dim .dimline::after { right: 0; }
+.c-dim .val { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); font-weight: 300; font-size: 9px; line-height: 12px; letter-spacing: 0.18em; color: var(--c-ink); opacity: 0; transition: opacity 0.35s; }
+.c-dim:hover .ext { background: var(--c-ink); height: 30px; }
+.c-dim:hover .dimline, .c-dim:hover .dimline::before, .c-dim:hover .dimline::after { background: var(--c-ink); }
+.c-dim:hover .val { opacity: 1; }
+
+.c-part { white-space: nowrap; flex: none; position: relative; display: inline-flex; align-items: center; gap: 16px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; padding: 6px 0; }
+.c-part .bubble { position: relative; width: 26px; height: 26px; border: 1px solid var(--c-soft); border-radius: 50%; display: grid; place-items: center; font-size: 9.5px; letter-spacing: 0.06em; color: var(--c-ink); transition: background 0.35s, color 0.35s; }
+.c-part .bubble::after { content: ''; position: absolute; left: 100%; top: 50%; width: 14px; height: 1px; background: var(--c-soft); }
+.c-part .word { position: relative; padding-bottom: 4px; }
+.c-part .word::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: transparent; transition: background 0.35s; }
+.c-part .leader { position: absolute; right: -40px; top: 50%; width: 32px; height: 1px; background: var(--c-hair); transform-origin: left center; transform: rotate(-30deg) scaleX(0); transition: transform 0.4s cubic-bezier(.2,.7,.2,1); }
+.c-part .leader::after { content: ''; position: absolute; right: -2px; top: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--c-ink); }
+.c-part:hover .bubble { background: var(--c-ink); color: var(--paper-lit); }
+.c-part:hover .word::after { background: var(--c-ink); }
+.c-part:hover .leader { transform: rotate(-30deg) scaleX(1); }
+
+/* the section frame button. Motion (owner: smoother): the hatch is drawn in left to right like a pencil pass,
+   and fades out on leave; the arrow's shaft is extended by the pen and the head rides on its end. Gradients do not
+   interpolate, so the hatch never changes its gradient, only its opacity and a clip. */
+:root { --ease-pen: cubic-bezier(.33, 1, .68, 1); --t-draw: 1s; --t-out: 0.5s; --feather: 32px;
+  --sweep: linear-gradient(90deg, #000 calc(100% - var(--feather)), transparent); }
+/* the pencil pass: a mask whose soft leading edge travels left to right; on leave the hatch fades and the mask resets */
+.pass { -webkit-mask-image: var(--sweep); mask-image: var(--sweep); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 0% 100%; mask-size: 0% 100%; opacity: 0;
+  transition: opacity var(--t-out) ease, -webkit-mask-size 0s linear var(--t-out), mask-size 0s linear var(--t-out); }
+a:hover .pass, a.is-hover .pass, a:focus-visible .pass { opacity: 1; -webkit-mask-size: calc(100% + var(--feather)) 100%; mask-size: calc(100% + var(--feather)) 100%;
+  transition: opacity 0.25s ease, -webkit-mask-size var(--t-draw) var(--ease-pen), mask-size var(--t-draw) var(--ease-pen); }
+.c-sect { position: relative; white-space: nowrap; flex: none; display: inline-flex; align-items: center; gap: 16px; padding: 13px 26px 13px 22px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; isolation: isolate; outline: none; }
+.c-sect .frame { position: absolute; inset: 0; z-index: -1; border: 1px solid var(--c-hair); transition: border-color 0.6s ease; }
+.c-sect .hatch { position: absolute; inset: 0; z-index: -2; padding: 7px; color: rgba(106, 102, 96, 0.3);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; }
+.c-sect .hatch > i { position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 4px, currentColor 4px 5px); }
+.c-sect .w { position: relative; z-index: 1; }
+.c-sect:hover .frame, .c-sect.is-hover .frame, .c-sect:focus-visible .frame { border-color: var(--c-ink); transition-duration: 0.35s; }
+.c-sect:active .hatch { color: rgba(106, 102, 96, 0.45); }
+/* the arrow: two strokes, the shaft scales from its tail, the head travels the same distance */
+.arr { width: 18px; height: 10px; display: block; overflow: visible; }
+.arr path { fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.arr .s { transform-box: fill-box; transform-origin: 0 50%; transition: transform 0.55s var(--ease-pen); }
+.arr .h { transition: transform 0.55s var(--ease-pen); }
+a:hover .arr .s, a.is-hover .arr .s, a:focus-visible .arr .s { transform: scaleX(1.36); transition-duration: 0.7s; }
+a:hover .arr .h, a.is-hover .arr .h, a:focus-visible .arr .h { transform: translateX(6px); transition-duration: 0.7s; }
+/* primary: the frame inverted. Filled with ink, the label in paper; on hover the band hatches in paper lines */
+.c-sect--primary { padding: 16px 32px 16px 28px; color: var(--paper-lit); }
+.c-sect--primary .frame { z-index: -2; border-color: var(--c-ink); background: var(--c-ink); }
+.c-sect--primary .hatch { z-index: -1; color: rgba(242, 238, 232, 0.6); }
+.c-sect--primary:active .hatch { color: rgba(242, 238, 232, 0.8); }
+@media (prefers-reduced-motion: reduce) {
+  .pass, a:hover .pass, a.is-hover .pass { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; transition: opacity 0.2s; }
+  .arr .s, .arr .h { transition: none; }
+}
+
+/* C04c more drafting variants: text in the dimension line, level mark, detail bubble, title block, scale bar */
+.c-dimin { position: relative; display: inline-flex; align-items: center; white-space: nowrap; flex: none; height: 32px; padding: 0 12px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; }
+.c-dimin .ext { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--c-hair); transition: background 0.35s, top 0.4s, bottom 0.4s; }
+.c-dimin .ext.l { left: 0; } .c-dimin .ext.r { right: 0; }
+.c-dimin .ln { position: relative; flex: none; width: 26px; height: 1px; background: var(--c-hair); transition: width 0.45s cubic-bezier(.2,.7,.2,1), background 0.35s; }
+.c-dimin .ln::after { content: ''; position: absolute; top: -4px; width: 1px; height: 9px; background: inherit; transform: rotate(45deg); }
+.c-dimin .ln.l { margin-left: -12px; margin-right: 14px; } .c-dimin .ln.l::after { left: 0; }
+.c-dimin .ln.r { margin-right: -12px; margin-left: 14px; } .c-dimin .ln.r::after { right: 0; }
+.c-dimin:hover .ln, .c-dimin.is-hover .ln { width: 48px; background: var(--c-ink); }
+.c-dimin:hover .ext, .c-dimin.is-hover .ext { background: var(--c-ink); top: -9px; bottom: -9px; }
+
+.c-level { white-space: nowrap; flex: none; position: relative; display: inline-block; padding: 0 0 12px 24px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; }
+.c-level .tri { position: absolute; left: 0; bottom: 5px; width: 13px; height: 13px; display: block; color: var(--c-soft); transition: color 0.35s; }
+.c-level .tri path { fill: transparent; stroke: currentColor; stroke-width: 1; transition: fill 0.35s; }
+.c-level .base { position: absolute; left: 0; right: -28px; bottom: 4px; height: 1px; background: var(--c-hair); transition: right 0.45s cubic-bezier(.2,.7,.2,1), background 0.35s; }
+.c-level .val { position: absolute; left: calc(100% + 12px); bottom: 9px; white-space: nowrap; font-size: 9px; letter-spacing: 0.18em; color: var(--c-faint); transition: color 0.35s; }
+.c-level:hover .tri, .c-level.is-hover .tri { color: var(--c-ink); } .c-level:hover .tri path, .c-level.is-hover .tri path { fill: currentColor; }
+.c-level:hover .base, .c-level.is-hover .base { right: -64px; background: var(--c-ink); }
+.c-level:hover .val, .c-level.is-hover .val { color: var(--c-ink); }
+
+.c-ref { white-space: nowrap; flex: none; display: inline-flex; align-items: center; gap: 16px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; }
+.c-ref .bub { position: relative; width: 32px; height: 32px; border: 1px solid var(--c-soft); border-radius: 50%; overflow: hidden; display: grid; grid-template-rows: 1fr 1fr; font-size: 8.5px; letter-spacing: 0.08em; line-height: 1; color: var(--c-ink); transition: border-color 0.35s; }
+.c-ref .bub span { display: grid; place-items: center; transition: background 0.35s, color 0.35s; }
+.c-ref .bub .lo { border-top: 1px solid var(--c-soft); }
+.c-ref .word { position: relative; padding-bottom: 4px; }
+.c-ref .word::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: transparent; transition: background 0.35s; }
+.c-ref:hover .bub, .c-ref.is-hover .bub { border-color: var(--c-ink); }
+.c-ref:hover .bub .lo, .c-ref.is-hover .bub .lo { background: var(--c-ink); color: var(--paper-lit); border-top-color: var(--c-ink); }
+.c-ref:hover .word::after, .c-ref.is-hover .word::after { background: var(--c-ink); }
+
+.c-stamp { white-space: nowrap; flex: none; display: inline-grid; grid-template-columns: auto auto; grid-template-rows: auto auto; border: 1px solid var(--c-hair); font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; transition: border-color 0.35s; }
+.c-stamp .k { grid-column: 1; grid-row: 1; padding: 6px 14px 5px; font-size: 8.5px; letter-spacing: 0.2em; color: var(--c-faint); border-bottom: 1px solid var(--c-hair); display: flex; gap: 14px; transition: border-color 0.35s; }
+.c-stamp .k b { font-weight: 300; color: var(--c-ink); }
+.c-stamp .w { grid-column: 1; grid-row: 2; padding: 10px 14px 11px; }
+.c-stamp .ar { grid-column: 2; grid-row: 1 / 3; width: 46px; border-left: 1px solid var(--c-hair); display: grid; place-items: center; position: relative; color: var(--c-ink); isolation: isolate; transition: border-color 0.6s ease; }
+.c-stamp .ar > i { position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(135deg, transparent 0 4px, rgba(106, 102, 96, 0.3) 4px 5px); }
+.c-stamp, .c-stamp .k { transition: border-color 0.6s ease; }
+.c-stamp:hover, .c-stamp.is-hover { border-color: var(--c-ink); }
+.c-stamp:hover .k, .c-stamp.is-hover .k { border-color: var(--c-ink); }
+.c-stamp:hover .ar, .c-stamp.is-hover .ar { border-color: var(--c-ink); }
+
+.c-scale { white-space: nowrap; flex: none; position: relative; display: inline-block; padding: 0 0 22px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; }
+.c-scale .bar { position: absolute; left: 0; right: 0; bottom: 6px; height: 5px; border: 1px solid var(--c-soft); display: flex; transition: border-color 0.35s; }
+.c-scale .bar i { flex: 1; background: transparent; transition: background 0.3s; }
+.c-scale .bar i:nth-child(odd) { background: var(--c-soft); }
+.c-scale .bar i + i { border-left: 1px solid var(--c-soft); }
+.c-scale .num { position: absolute; bottom: -8px; font-size: 7.5px; letter-spacing: 0.1em; color: var(--c-faint); transform: translateX(-50%); }
+.c-scale .num.a { left: 0; } .c-scale .num.b { left: 50%; } .c-scale .num.c { left: 100%; }
+.c-scale:hover .bar, .c-scale.is-hover .bar { border-color: var(--c-ink); }
+.c-scale:hover .bar i, .c-scale.is-hover .bar i { background: var(--c-ink); }
+.c-scale:hover .bar i:nth-child(2), .c-scale.is-hover .bar i:nth-child(2) { transition-delay: 0.06s; } .c-scale:hover .bar i:nth-child(3), .c-scale.is-hover .bar i:nth-child(3) { transition-delay: 0.12s; }
+.c-scale:hover .bar i:nth-child(4), .c-scale.is-hover .bar i:nth-child(4) { transition-delay: 0.18s; } .c-scale:hover .bar i:nth-child(5), .c-scale.is-hover .bar i:nth-child(5) { transition-delay: 0.24s; } .c-scale:hover .bar i:nth-child(6), .c-scale.is-hover .bar i:nth-child(6) { transition-delay: 0.3s; }
+
+/* C04d drafted shapes (proposals): cartouche, chamfered plate, doorway arch, break line. Built by assets/js/shapes.js.
+   Same motion as the frame: hatch drawn in left to right, faded out on leave, arrow extended by the pen. */
+.c-shape { position: relative; white-space: nowrap; flex: none; display: inline-flex; align-items: center; gap: 16px; padding: 14px 30px 14px 26px; font-weight: 300; font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-ink); text-decoration: none; isolation: isolate; outline: none; }
+.c-shape > svg.sh-body, .c-shape > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; }
+.c-shape > svg.sh-body { z-index: -2; }
+.c-shape > svg.sh-hatch { z-index: -1; color: rgba(106, 102, 96, 0.32); }
+.c-shape .sh-hatch line { stroke: currentColor; stroke-width: 1; }
+.c-shape .sh-body .o { fill: none; stroke: var(--c-hair); stroke-width: 1; transition: stroke 0.6s ease, fill 0.6s ease; }
+.c-shape .sh-body .x { fill: none; stroke: var(--c-hair); stroke-width: 1; stroke-linecap: round; transition: stroke 0.6s ease; }
+.c-shape .w { position: relative; z-index: 1; }
+.c-shape:hover .sh-body .o, .c-shape.is-hover .sh-body .o, .c-shape:focus-visible .sh-body .o,
+.c-shape:hover .sh-body .x, .c-shape.is-hover .sh-body .x, .c-shape:focus-visible .sh-body .x { stroke: var(--c-ink); transition-duration: 0.35s; }
+.c-shape--primary { color: var(--paper-lit); padding: 16px 34px 16px 30px; }
+.c-shape--primary .sh-body .o { fill: var(--c-ink); stroke: var(--c-ink); }
+.c-shape--primary .sh-body .x { stroke: var(--c-ink); }
+.c-shape--primary > svg.sh-hatch { color: rgba(242, 238, 232, 0.6); }
+.c-shape[data-shape="arch"] { padding-top: 19px; }
+.c-shape[data-shape="break"] { padding-right: 36px; }
+.c-shapes { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 40px; row-gap: 14px; align-items: center; margin: 0 0 48px; }
+.c-shapes .d { grid-column: 1 / -1; margin-top: 22px; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-faint); }
+.c-shapes .d:first-child { margin-top: 0; }
+.c-shapes .d b { font-weight: 300; color: var(--c-soft); margin-right: 14px; }
+
+/* C06b product previews: the hero of each product, framed. Three frames in the drafting language.
+   A bezel: the screen seen through the chamfered plate (the buttons, the watch case); a band between the outline and
+   the screen hatches on hover. B measured: the screen as a drawn object, with its dimensions and centre marks.
+   C drawn browser: the window chrome drawn in hairline, the address set wide. All float on the lamp's shadow. */
+.c-plate { position: relative; display: block; color: var(--c-ink); text-decoration: none; outline: none; }
+.c-plate .lift { position: relative; display: block; transition: transform 0.8s var(--ease-pen); z-index: 1; }
+.c-plate:hover .lift, .c-plate.is-hover .lift, .c-plate:focus-visible .lift { transform: translateY(-6px); }
+.c-plate .scr { display: block; width: 100%; height: auto; }
+.c-plate .sh { position: absolute; z-index: 0; pointer-events: none; box-sizing: border-box; border: var(--sl) solid transparent;
+  /* set off from the plate by the lamp (--dx, --dy) and drawn smaller by --k, through its place, not a transform: a
+     transformed shadow still cost WebKit a third of the lost frames (2026-10-28) */
+  top: calc(var(--k, 0px) - var(--m) + var(--dy)); bottom: calc(var(--k, 0px) - var(--m) - var(--dy));
+  left: calc(var(--k, 0px) - var(--m) + var(--dx)); right: calc(var(--k, 0px) - var(--m) - var(--dx));
+  transition: top 0.8s var(--ease-pen), right 0.8s var(--ease-pen), bottom 0.8s var(--ease-pen), left 0.8s var(--ease-pen); }
+/* the shadow is a picture, stretched: never a blur filter (Safari re-rasterised the blurred layers each time a showcase
+   came into view, the page froze for 400-500 ms, 2026-10-23) and no longer a blurred box-shadow either (WebKit computed
+   the 68 px blur again for every strip that scrolled into view: 140-160 ms of lost frames in the software showcases,
+   2026-10-28). tools/shadows.cjs renders that same box-shadow once around a reference plate, with its falloff margin
+   (--m) and its strength baked in (no opacity here: a layer below 1 is drawn apart and blended, 2026-10-28), and
+   border-image stretches its eight edge slices (--sl) to any plate; the middle is not drawn (the plate covers it and
+   the lamp's offset, at most 42 px, stays within the slices); the lamp's offset stays here. */
+.c-plate .sh i { display: none; }
+.c-plate .sh.a { --m: 24px; --sl: 84px; border-image: url("../shadows/plate-a.png") 84 / 84px stretch;
+  --dx: calc(var(--ldx, 0) * -5px); --dy: calc(var(--ldy, -1) * -5px); }
+.c-plate .sh.b { --m: 110px; --sl: 170px; border-image: url("../shadows/plate-b.png") 170 / 170px stretch;
+  --k: 0.75%;   /* 1.5 % smaller, as the old scale(0.985) */
+  --dx: calc(var(--ldx, 0) * -30px); --dy: calc(var(--ldy, -1) * -30px); }
+.c-plate:hover .sh.b, .c-plate.is-hover .sh.b { --k: 0.5%; --dx: calc(var(--ldx, 0) * -42px); --dy: calc(var(--ldy, -1) * -42px); }   /* the lift lengthens it (its 0.22 to 0.25 deepening went with the opacity) */
+/* A bezel */
+.c-plate--bezel .lift { padding: var(--band, 10px); }
+.c-plate--bezel .lift > svg.sh-body, .c-plate--bezel .lift > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; }
+.c-plate--bezel .lift > svg.sh-hatch { color: rgba(106, 102, 96, 0.34); }
+.c-plate--bezel .sh-hatch line { stroke: currentColor; stroke-width: 1; }
+.c-plate--bezel .sh-body .o { fill: var(--paper-lit); stroke: var(--c-soft); stroke-width: 1; transition: stroke 0.6s ease; }
+.c-plate--bezel:hover .sh-body .o, .c-plate--bezel.is-hover .sh-body .o { stroke: var(--c-ink); transition-duration: 0.35s; }
+.c-plate--bezel .scr { -webkit-clip-path: var(--clip-in); clip-path: var(--clip-in); position: relative; }
+/* B measured */
+.c-plate--measured { margin: 44px 0 0 44px; }
+.c-plate--measured .scr { box-shadow: 0 0 0 1px rgba(60, 55, 50, 0.3); }
+.c-plate--measured .dim { position: absolute; color: var(--c-faint); font-weight: 300; font-size: 9.5px; letter-spacing: 0.2em; transition: color 0.5s ease; }
+.c-plate--measured .dim i { position: absolute; background: var(--c-hair); transition: background 0.5s ease; }
+.c-plate--measured .dim.w { left: 0; right: 0; top: -30px; height: 1px; }
+.c-plate--measured .dim.w .ln { left: 0; right: 0; top: 0; height: 1px; }
+.c-plate--measured .dim.w .x0, .c-plate--measured .dim.w .x1 { top: -4px; width: 1px; height: 30px; }
+.c-plate--measured .dim.w .x0 { left: 0; } .c-plate--measured .dim.w .x1 { right: 0; }
+.c-plate--measured .dim.w .t0, .c-plate--measured .dim.w .t1 { top: -4px; width: 1px; height: 9px; transform: rotate(45deg); }
+.c-plate--measured .dim.w .t0 { left: 0; } .c-plate--measured .dim.w .t1 { right: 0; }
+.c-plate--measured .dim.w b { position: absolute; left: 50%; top: -16px; transform: translateX(-50%); font-weight: 300; background: var(--paper); padding: 0 10px; }
+.c-plate--measured .dim.h { top: 0; bottom: 0; left: -30px; width: 1px; }
+.c-plate--measured .dim.h .ln { top: 0; bottom: 0; left: 0; width: 1px; }
+.c-plate--measured .dim.h .x0, .c-plate--measured .dim.h .x1 { left: -4px; height: 1px; width: 30px; }
+.c-plate--measured .dim.h .x0 { top: 0; } .c-plate--measured .dim.h .x1 { bottom: 0; }
+.c-plate--measured .dim.h .t0, .c-plate--measured .dim.h .t1 { left: -4px; height: 1px; width: 9px; transform: rotate(45deg); }
+.c-plate--measured .dim.h .t0 { top: 0; } .c-plate--measured .dim.h .t1 { bottom: 0; }
+.c-plate--measured .dim.h b { position: absolute; top: 50%; left: -16px; transform: translate(-50%, -50%) rotate(-90deg); font-weight: 300; background: var(--paper); padding: 0 10px; white-space: nowrap; }
+.c-plate--measured .cm { position: absolute; width: 15px; height: 15px; }
+.c-plate--measured .cm::before, .c-plate--measured .cm::after { content: ''; position: absolute; background: var(--c-hair); transition: background 0.5s ease; }
+.c-plate--measured .cm::before { left: 7px; top: 0; width: 1px; height: 15px; } .c-plate--measured .cm::after { top: 7px; left: 0; height: 1px; width: 15px; }
+.c-plate--measured .cm.r { right: -26px; top: calc(50% - 7px); } .c-plate--measured .cm.b { bottom: -26px; left: calc(50% - 7px); }
+.c-plate--measured:hover .dim, .c-plate--measured.is-hover .dim { color: var(--c-ink); }
+.c-plate--measured:hover .dim i, .c-plate--measured.is-hover .dim i, .c-plate--measured:hover .cm::before, .c-plate--measured:hover .cm::after,
+.c-plate--measured.is-hover .cm::before, .c-plate--measured.is-hover .cm::after { background: var(--c-ink); }
+/* C drawn browser */
+.c-plate--browser .lift { border: 1px solid var(--c-soft); background: var(--paper-lit); transition: transform 0.8s var(--ease-pen), border-color 0.6s ease; }
+.c-plate--browser .bar { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 34px; padding: 0 14px; border-bottom: 1px solid var(--c-hair); }
+.c-plate--browser .dots { display: flex; gap: 7px; }
+.c-plate--browser .dots i { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--c-soft); }
+.c-plate--browser .addr { font-weight: 300; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-soft); padding: 4px 26px; border: 1px solid var(--c-hair); }
+.c-plate--browser .bar::after { content: ''; justify-self: end; width: 64px; height: 1px; background: var(--c-hair); grid-column: 3; }
+.c-plate--browser .pass { position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(135deg, transparent 0 4px, rgba(106, 102, 96, 0.22) 4px 5px); }
+.c-plate--browser:hover .lift, .c-plate--browser.is-hover .lift { border-color: var(--c-ink); }
+/* the caption under a plate */
+.c-plate-cap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 30px; }
+.c-plate-cap .lbl { color: var(--c-soft); }
+.c-plates { display: grid; grid-template-columns: repeat(8, 1fr); row-gap: clamp(90px, 12vh, 160px); }
+.c-plates > .p1 { grid-column: 1 / 7; } .c-plates > .p2 { grid-column: 3 / 9; } .c-plates > .p3 { grid-column: 1 / 7; }
+
+/* C06c the showcase (after Longbow's cars): the product's hero nearly the whole screen in the bezel plate, a drafting
+   grid of 4 x 2 drawn over it, and a paper card laid in one cell. The card always sits in the same cell
+   (fourth column, lower row), for every product: no scattering from side to side. Its outer corner is cut
+   by the same chamfer as the screen, so it fits the plate's corner exactly. */
+.c-show { position: relative; }
+.c-show .c-plate { width: min(100%, calc(96vh * 1.7778 + 24px)); margin: 0 auto; }
+.c-show .c-plate .lift { transform: none !important; }
+.c-plate:hover .pass, .c-plate:focus-within .pass { opacity: 1; -webkit-mask-size: calc(100% + var(--feather)) 100%; mask-size: calc(100% + var(--feather)) 100%;
+  transition: opacity 0.25s ease, -webkit-mask-size var(--t-draw) var(--ease-pen), mask-size var(--t-draw) var(--ease-pen); }
+.c-show .grid { position: absolute; inset: var(--band, 10px); z-index: 2; pointer-events: none; -webkit-clip-path: var(--clip-in); clip-path: var(--clip-in); }
+.c-show .grid i { position: absolute; background: rgba(242, 238, 232, 0.16); }
+.c-show .grid .v { top: 0; bottom: 0; width: 1px; } .c-show .grid .h { left: 0; right: 0; height: 1px; top: 50%; }
+.c-show .grid .v1 { left: 25%; } .c-show .grid .v2 { left: 50%; } .c-show .grid .v3 { left: 75%; }
+.c-show .grid .n { width: 11px; height: 11px; background: none; transform: translate(-5px, -5px); }
+.c-show .grid .n::before, .c-show .grid .n::after { content: ''; position: absolute; background: rgba(242, 238, 232, 0.55); }
+.c-show .grid .n::before { left: 5px; top: 0; width: 1px; height: 11px; } .c-show .grid .n::after { top: 5px; left: 0; height: 1px; width: 11px; }
+/* the card: a leaf of paper in the cell, cut like the plate */
+/* the card: a small leaf of paper in the screen's lower right corner, as tall as its text. Its corner chamfer is computed
+   by shapes.js from the screen's, so it sits exactly in the screen's cut corner at every width. */
+.c-card { position: absolute; z-index: 3; isolation: isolate;
+  right: var(--plate-band, 10px); bottom: var(--plate-band, 10px); width: calc((100% - 2 * var(--plate-band, 10px)) * 0.2); min-width: 250px;
+  display: flex; flex-direction: column; padding: clamp(20px, 1.6vw, 30px) clamp(20px, 1.6vw, 30px) clamp(20px, 1.5vw, 28px); box-sizing: border-box; }
+.c-card > svg.sh-body, .c-card > svg.sh-hatch { position: absolute; left: -8px; top: -8px; overflow: visible; pointer-events: none; z-index: -1; }
+.c-card > svg.sh-hatch { display: none; }
+.c-card .sh-body .o { fill: var(--paper-lit); stroke: rgba(106, 102, 96, 0.4); stroke-width: 1; }
+.c-card .dom { font-weight: 400; font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); margin: 0; }
+.c-card .claim { font-weight: 200; font-size: clamp(20px, 1.45vw, 28px); line-height: 1.08; letter-spacing: -0.015em; color: var(--c-ink); margin: 12px 0 0; }
+.c-card .list { font-weight: 300; font-size: 12.5px; letter-spacing: 0.03em; line-height: 1.75; color: var(--c-soft); margin: 14px 0 0; padding: 0; list-style: none; }
+.c-card .thumb { flex: 1 1 0; min-height: 0; margin: 14px 0; }
+.c-card .thumb img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: multiply; }
+.c-card .act { margin-top: 24px; }
+.c-card .c-shape { padding: 11px 24px 11px 20px; font-size: 11.5px; }
+.c-card .c-status { display: inline-block; font-weight: 400; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-faint); padding: 12px 0; border-top: 1px solid var(--c-hair); width: 100%; }
+.c-show-cap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin: 30px auto 0; width: min(100%, calc(96vh * 1.7778 + 24px)); }
+.c-show-cap .lbl { color: var(--c-soft); }
+@media (max-width: 1100px) {
+  .c-card { width: calc((100% - 2 * var(--plate-band, 10px)) * 0.3); }
+  .c-card .thumb { display: none; }
+  .c-card .list { display: none; }
+}
+@media (max-width: 900px) {
+  .c-show .grid .v1, .c-show .grid .v3, .c-show .grid .n.q { display: none; }
+  /* narrower, after Longbow: the card leaves its frame and lies on the paper under the screen, centred, held to the
+     screen by nearness alone (no divider: the screen's edge already ends the picture); the screen's shadow stops at the screen */
+  .c-show .c-plate .sh { bottom: auto; height: calc(var(--lift-h, 100%) + 2 * var(--m)); }
+  .c-card { position: relative; left: auto; right: auto; bottom: auto; width: 100%; min-width: 0; height: auto; margin-top: 0;
+    padding: 40px 8px 36px; align-items: center; text-align: center; }
+  .c-card > svg.sh-body { display: none; }
+  .c-card .claim { margin-top: 14px; }
+  .c-card .list { display: block; }
+  .c-card .act { margin-top: 26px; }
+  .c-card .c-status { width: auto; border-top: 0; padding: 0; margin-top: 4px; }
+  .c-card .thumb { display: block; flex: none; height: 170px; }
+}
+
+/* C05 figure with caption: the drawing on the sheet and its label, like a plate in a treatise */
+.c-fig { margin: 0; }
+.c-fig .draw svg, .c-fig .draw img { width: 100%; height: auto; display: block; }
+.c-fig figcaption { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; margin-top: 26px; }
+.c-fig figcaption .lbl { color: var(--c-soft); }
+.c-fig figcaption .c-rule { margin: 0; }
+
+/* C06 product: it floats above the sheet. No glass, no frame: the screen itself, held a little above
+   the paper, and the shadow it throws from the same lamp (light.js writes --ldx/--ldy on :root). */
+.c-prod { display: grid; grid-template-columns: repeat(8, 1fr); align-items: start; }
+.c-prod .float { grid-column: 1 / 6; position: relative; border-radius: 3px; overflow: hidden; transform: translateY(0); transition: transform 0.6s cubic-bezier(.2,.7,.2,1), box-shadow 0.6s;
+  box-shadow:
+    0 0 0 0.5px rgba(60, 55, 50, 0.35),
+    calc(var(--ldx) * -6px)  calc(var(--ldy) * -6px)  12px rgba(60, 55, 50, 0.10),
+    calc(var(--ldx) * -34px) calc(var(--ldy) * -34px) 70px rgba(60, 55, 50, 0.20); }
+.c-prod .float img { width: 100%; height: auto; display: block; }
+.c-prod .float:hover { transform: translateY(-6px);
+  box-shadow:
+    0 0 0 0.5px rgba(60, 55, 50, 0.35),
+    calc(var(--ldx) * -8px)  calc(var(--ldy) * -8px)  16px rgba(60, 55, 50, 0.10),
+    calc(var(--ldx) * -48px) calc(var(--ldy) * -48px) 96px rgba(60, 55, 50, 0.22); }
+.c-prod .side { grid-column: 7 / 9; padding-top: 10px; }
+.c-prod .side h3 { font-weight: 200; font-size: clamp(22px, 1.7vw, 32px); line-height: 1.15; margin: 0 0 16px; color: var(--c-ink); }
+.c-prod .side p { font-weight: 300; font-size: var(--t-body); line-height: 1.6; color: var(--c-soft); margin: 0; }
+.c-prod .side .act { margin-top: 30px; }
+
+/* C07 schedule: a numbered ledger with hairlines, the way a drawing lists its rooms */
+.c-sched { width: 100%; border-collapse: collapse; }
+.c-sched tr { border-top: 1px solid var(--c-hair); }
+.c-sched tr:last-child { border-bottom: 1px solid var(--c-hair); }
+.c-sched td { padding: 22px 0; vertical-align: baseline; }
+.c-sched td.n { width: 9%; font-weight: 300; font-size: 13px; letter-spacing: 0.1em; color: var(--c-faint); font-variant-numeric: tabular-nums; }
+.c-sched td.name { width: 30%; font-weight: 300; font-size: clamp(20px, 1.4vw, 26px); letter-spacing: -0.01em; color: var(--c-ink); }
+.c-sched td.desc { font-weight: 300; font-size: var(--t-body); line-height: 1.55; color: var(--c-soft); padding-right: 8%; }
+.c-sched td.st { width: 16%; text-align: right; font-weight: 400; font-size: var(--t-lbl); letter-spacing: 0.26em; text-transform: uppercase; color: var(--c-faint); }
+
+/* C08 footer */
+.c-foot { display: grid; grid-template-columns: repeat(8, 1fr); padding-top: 40px; row-gap: 48px; }
+.c-foot .word { grid-column: 1 / 3; font-weight: 200; font-size: clamp(30px, 2.3vw, 44px); letter-spacing: -0.02em; line-height: 0.95; color: var(--c-ink); }
+.c-foot .col { font-weight: 300; font-size: 13px; line-height: 2; letter-spacing: 0.04em; color: var(--c-soft); }
+.c-foot .col .lbl { margin-bottom: 10px; }
+.c-foot .col a { display: block; }
+.c-foot .c1 { grid-column: 4 / 6; } .c-foot .c2 { grid-column: 6 / 8; } .c-foot .c3 { grid-column: 8 / 9; }
+.c-foot .base { grid-column: 1 / 9; display: flex; justify-content: space-between; font-weight: 300; font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-faint); padding-top: 22px; border-top: 1px solid var(--c-hair); }

@@ -1,0 +1,122 @@
+/* Materials: everything that sits on the sheet. Every offset is a function of --ldx/--ldy
+   (unit vector toward the lamp) so a raised thing is lit on the lamp side and a pressed
+   thing is dark on the lamp side. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+body { margin: 0; font-family: var(--f-sans); font-weight: 300; font-size: var(--fs-body); line-height: 1.5; min-height: 100vh; }
+html, body { overflow-x: hidden; }
+.page { position: fixed; top: 0; left: 0; width: 100%; will-change: transform; }
+.scroll-spacer { width: 1px; pointer-events: none; }
+#paper { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; will-change: transform; }
+.ink { mix-blend-mode: multiply; }
+.no-webgl body { background: radial-gradient(120vw 90vh at var(--light-x) var(--light-y), var(--paper-lit), var(--paper) 55%, var(--paper-shade)); }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- type ---------- */
+.eyebrow { font-family: var(--f-sans); font-weight: 500; font-size: var(--fs-eyebrow); letter-spacing: var(--track-eyebrow); text-transform: uppercase; color: var(--bronze-600); margin: 0; }
+.eyebrow--ink { color: var(--ink-faint); }
+.caps { font-family: var(--f-caps); font-weight: 500; letter-spacing: var(--track-caps); text-transform: uppercase; }
+.display { font-family: var(--f-sans); font-weight: 200; line-height: 1.02; letter-spacing: -0.02em; margin: 0; }
+.display i, .display em { font-style: normal; font-weight: 400; }
+h1.display { font-size: var(--fs-h1); }
+h2.display { font-size: var(--fs-h2); }
+.lead { font-size: var(--fs-lead); font-weight: 300; line-height: 1.38; max-width: var(--measure); margin: 0; color: var(--ink-soft); }
+.body { max-width: var(--measure); margin: 0; }
+.small { font-size: var(--fs-small); color: var(--ink-faint); line-height: 1.45; }
+.num { font-variant-numeric: lining-nums; }
+
+/* physical type lives in the sheet; the HTML copy stays for layout, selection and search */
+[data-phys="emboss"], [data-phys="press"], [data-phys="blind"], [data-phys="foil"] {
+  color: transparent !important; -webkit-text-fill-color: transparent; text-shadow: none !important;
+  font-variant-ligatures: none; font-kerning: normal;
+}
+[data-phys="emboss"] { display: inline-block; line-height: 1; white-space: nowrap; }
+[data-phys="emboss"] > span { background: none; }
+[data-phys="emboss"].ink, [data-phys="press"].ink, [data-phys="blind"].ink { mix-blend-mode: normal; }
+[data-phys="print"] img, [data-phys="print"] svg, img[data-phys="print"], svg[data-phys="print"], [data-phys="glass"] img, [data-phys="window"] img, [data-phys="pane"] img, [data-phys="under"] img, [data-phys="medal"] svg { opacity: 0; }
+[data-phys="plate"], [data-phys="bezel"], [data-phys="glass"], [data-phys="window"], [data-phys="pane"], [data-phys="under"], [data-phys="loupe"], [data-phys="medal"], [data-phys="slab"], [data-phys="card"] { background: none !important; box-shadow: none !important; }
+.debug [data-phys] { outline: 1px dashed rgba(220, 0, 0, 0.5); }
+.debug [data-phys="emboss"], .debug [data-phys="press"], .debug [data-phys="blind"], .debug [data-phys="foil"] { color: rgba(220, 0, 0, 0.55) !important; -webkit-text-fill-color: rgba(220, 0, 0, 0.55); }
+.debug [data-phys="print"] img, .debug [data-phys="print"] svg, .debug img[data-phys="print"], .debug [data-phys="glass"] img, .debug [data-phys="medal"] svg { opacity: 0.4; }
+
+/* ---------- rules and plates ---------- */
+.rule { height: 1px; background: var(--ink-hair); border: 0; margin: 0; }
+.rule--bronze { height: 1px; background: linear-gradient(90deg, transparent, var(--bronze-400) 12%, var(--bronze-100) 50%, var(--bronze-400) 88%, transparent); box-shadow: 0 1px 0 rgba(255, 250, 240, 0.5); }
+.rule--pressed { height: 2px; background: transparent; box-shadow: inset 0 1px 0 rgba(40, 26, 12, 0.22), inset 0 -1px 0 rgba(255, 250, 240, 0.6); }
+
+/* plate mark: the rectangle an intaglio plate presses into damp paper (rendered in the sheet) */
+.plate { position: relative; display: block; }
+.plate > * { position: relative; }
+
+/* raised card on the sheet (a thing lying on the paper) */
+.raised {
+  box-shadow:
+    calc(var(--ldx) * -1px)  calc(var(--ldy) * -1px)  0    rgba(40, 26, 12, 0.35),
+    calc(var(--ldx) * -4px)  calc(var(--ldy) * -4px)  5px  rgba(40, 26, 12, 0.22),
+    calc(var(--ldx) * -22px) calc(var(--ldy) * -22px) 48px var(--shadow-soft),
+    calc(var(--ldx) * 1px)   calc(var(--ldy) * 1px)   0    var(--light-edge);
+}
+
+/* ---------- bronze ---------- */
+.bronze {
+  --hot: var(--lpx, 35%);
+  position: relative; color: var(--bronze-700);
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='b' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.9 0.0045' numOctaves='3' seed='5' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.62' intercept='0.06'/></feComponentTransfer></filter><rect width='900' height='900' filter='url(%23b)'/></svg>"),
+    radial-gradient(70% 90% at var(--lpx, 35%) var(--lpy, 0%), rgba(255, 244, 226, 0.42), rgba(255, 244, 226, 0) 60%),
+    linear-gradient(90deg, var(--bronze-700) 0%, var(--bronze-500) calc(var(--hot) - 34%), var(--bronze-300) calc(var(--hot) - 14%), var(--bronze-100) var(--hot), var(--bronze-300) calc(var(--hot) + 9%), var(--bronze-500) calc(var(--hot) + 26%), var(--bronze-600) calc(var(--hot) + 44%), var(--bronze-400) calc(var(--hot) + 58%), var(--bronze-700) 100%);
+  background-blend-mode: overlay, screen, normal;
+}
+.bronze--h {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='b' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='fractalNoise' baseFrequency='0.0045 0.9' numOctaves='3' seed='5' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.62' intercept='0.06'/></feComponentTransfer></filter><rect width='900' height='900' filter='url(%23b)'/></svg>"),
+    radial-gradient(90% 70% at var(--lpx, 35%) var(--lpy, 0%), rgba(255, 244, 226, 0.5), rgba(255, 244, 226, 0) 60%),
+    linear-gradient(180deg, var(--bronze-700) 0%, var(--bronze-400) 30%, var(--bronze-100) 48%, var(--bronze-300) 60%, var(--bronze-600) 100%);
+  background-blend-mode: overlay, screen, normal;
+}
+/* a chamfered lip: lit on the lamp side, dark away */
+.bevel {
+  box-shadow:
+    inset calc(var(--ldx) *  1px) calc(var(--ldy) *  1px) 0 rgba(255, 240, 215, 0.75),
+    inset calc(var(--ldx) * -1px) calc(var(--ldy) * -1px) 0 rgba(50, 30, 12, 0.55);
+}
+
+/* the screen: a bronze bezel holding a product shot (rendered in the sheet) */
+.screen { margin: 0; position: relative; }
+.screen__bezel { padding: 18px; border-radius: 9px; }
+.screen__glass { position: relative; }
+.screen__glass img { width: 100%; height: auto; display: block; }
+.screen__window { padding: 6px; border-radius: 4px; }
+.screen__window img { width: 100%; height: auto; display: block; }
+
+/* medallion / dial: discs rendered in the sheet; the svg inside is the pressed mask */
+.medallion { position: relative; width: 300px; aspect-ratio: 1; border-radius: 50%; }
+.medallion > div { position: absolute; inset: 20%; }
+.medallion > div svg { width: 100%; height: 100%; overflow: visible; }
+.medallion .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mark-ink { --mark-ink: var(--ink); --mark-paper: var(--paper-lit); }
+
+/* ---------- layout helpers ---------- */
+.wrap { padding: 0 var(--gutter); }
+.grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); column-gap: 0; }
+.grid > * { min-width: 0; }
+.s { padding: clamp(80px, 12vh, 160px) 0; }
+.top { display: flex; align-items: center; justify-content: space-between; padding: 28px var(--gutter); }
+.top .mark { display: block; width: 30px; height: 37px; }
+.top .mark svg { width: 100%; height: 100%; }
+.gridlines { position: fixed; inset: 0; pointer-events: none; z-index: 5; display: none; padding: 0 var(--gutter); }
+.gridlines > div { display: grid; grid-template-columns: repeat(8, 1fr); height: 100%; }
+.gridlines > div > i { border-left: 1px solid rgba(60, 42, 26, 0.18); }
+.gridlines > div > i:last-child { border-right: 1px solid rgba(60, 42, 26, 0.18); }
+.show-grid .gridlines { display: block; }
+
+/* swatches */
+.swatches { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+.swatch { height: 72px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(40, 26, 12, 0.18), calc(var(--ldx) * -2px) calc(var(--ldy) * -2px) 4px var(--shadow-soft); }
+.dial-numerals { display: flex; gap: 0.6em; flex-wrap: wrap; align-items: baseline; }
+
+/* print note */
+.note { font-family: var(--f-sans); font-weight: 300; font-size: 12.5px; letter-spacing: 0.02em; line-height: 1.5; color: var(--ink-faint); max-width: 36em; }
+.note b { font-weight: 500; color: var(--ink-soft); }

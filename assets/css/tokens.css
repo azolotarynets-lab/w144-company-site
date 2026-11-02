@@ -1,0 +1,66 @@
+/* W144 Company — tokens. Paper, ink, bronze. One light source drives every shadow. */
+@import url('../fonts/google-fonts.css');
+
+@font-face { font-family: 'Riviera Nights'; font-weight: 200; src: url('../fonts/RivieraNights-Ultralight-WebXL.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Riviera Nights'; font-weight: 300; src: url('../fonts/RivieraNights-Light-WebXL.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Riviera Nights'; font-weight: 400; src: url('../fonts/RivieraNights-Regular-WebXL.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Riviera Nights'; font-weight: 500; src: url('../fonts/RivieraNights-Medium-WebXL.woff2') format('woff2'); font-display: swap; }
+
+:root {
+  /* paper: thin, fine, white-beige, unaged (decision 2026-10-22 evening) */
+  --paper:       #e9e4dc;
+  --paper-lit:   #f2eee8;
+  --paper-shade: #ddd7ce;
+  --paper-deep:  #c9c2b7;
+
+  /* ink: graphite grey, never black; contrast kept down on purpose */
+  --ink:         #6a6660;
+  --ink-soft:    #817c76;
+  --ink-faint:   #a39d96;
+  --ink-hair:    rgba(106, 102, 96, 0.18);
+  --pencil:      #7d7873;
+  --pencil-soft: #a8a29b;
+
+  /* bronze / rose gold (A. Lange pink gold on grained silver) */
+  --bronze-100:  #ecd4ad;  /* hot highlight */
+  --bronze-200:  #d3ae80;
+  --bronze-300:  #b08c58;  /* body */
+  --bronze-400:  #96713f;
+  --bronze-500:  #78562e;
+  --bronze-600:  #5a3e20;
+  --bronze-700:  #3d2914;  /* deep shadow */
+  --bronze:      var(--bronze-300);
+
+  /* shadow colours are tinted paper, never grey */
+  --shadow-ink:  rgba(60, 42, 26, 0.55);
+  --shadow-soft: rgba(60, 42, 26, 0.18);
+  --light-edge:  rgba(255, 250, 240, 0.85);
+
+  /* light: unit direction toward the lamp, updated by light.js per element */
+  --ldx: -0.6;
+  --ldy: -0.8;
+  --light-x: 40vw;
+  --light-y: -10vh;
+
+  /* type */
+  --f-sans:    'Riviera Nights', 'Helvetica Neue', Arial, sans-serif;
+  --f-display: var(--f-sans);   /* decision 2026-10-22: Riviera Nights for all type, flat ink, no effects */
+  --f-caps:    var(--f-sans);
+  --f-serif:   'Cormorant Garamond', 'Times New Roman', serif;   /* kept on the material sheet only */
+
+  --fs-eyebrow: 11px;
+  --fs-small:   13px;
+  --fs-body:    17px;
+  --fs-lead:    22px;
+  --fs-h3:      28px;
+  --fs-h2:      44px;
+  --fs-h1:      clamp(56px, 7.2vw, 112px);
+  --fs-numeral: clamp(120px, 16vw, 260px);
+
+  --track-caps: 0.22em;
+  --track-eyebrow: 0.28em;
+
+  --measure: 34em;
+  --gutter: clamp(20px, 4vw, 64px);
+  --col: calc((100vw - 2 * var(--gutter)) / 8);
+}
